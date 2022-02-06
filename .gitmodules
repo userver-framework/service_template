@@ -1,0 +1,6 @@
+[submodule "third_party/testsuite"]
+	path = third_party/testsuite
+	url = git@github.com:yandex/yandex-taxi-testsuite.git
+[submodule "third_party/userver"]
+	path = third_party/userver
+	url = git@github.com:userver-framework/userver.git
