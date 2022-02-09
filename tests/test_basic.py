@@ -1,7 +1,7 @@
-import pytest
+# Start via:
+# ~/.local/bin/pytest --build-dir=/data/code/service_template/build_debug
 
-@pytest.mark.asyncio
-async def test_basic(server_client):
-    response = await server_client.post('/hello', json={})
+
+async def test_basic(service_template_client):
+    response = await service_template_client.post('/hello', json={})
     assert response.status == 200
-    assert handle_send.times_called == 1
