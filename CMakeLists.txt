@@ -7,14 +7,7 @@ set(CMAKE_MODULE_PATH
 )
 include(SetupEnvironment)
 
-set(USERVER_FEATURE_CRYPTOPP_BLAKE OFF CACHE BOOL "")
-set(USERVER_FEATURE_CRYPTOPP_BASE64_URL OFF CACHE BOOL "")
-set(USERVER_FEATURE_POSTGRESQL OFF CACHE BOOL "")
-set(USERVER_FEATURE_MONGODB OFF CACHE BOOL "")
-set(USERVER_FEATURE_GRPC OFF CACHE BOOL "")
 add_subdirectory(third_party/userver)
-
-# cmake --build . -j$(nproc) --target service_template
 
 add_executable(${PROJECT_NAME}
     src/hello.hpp
