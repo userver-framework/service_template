@@ -27,14 +27,20 @@ $(DEBUG_BUILDDIR)/Makefile:
 .PHONY: cmake-debug
 cmake-debug: $(DEBUG_BUILDDIR)/Makefile
 
+$(DEBUG_BUILDDIR)/tests/venv/pyvenv.cfg:
+	@cmake --build $(DEBUG_BUILDDIR) -j$(NPROCS) --target testsuite-venv
+
+.PHONY: venv-debug
+venv-debug: $(DEBUG_BUILDDIR)/tests/venv/pyvenv.cfg
+
 .PHONY: build-debug
 build-debug: cmake-debug
 	@cmake --build $(DEBUG_BUILDDIR) -j$(NPROCS) --target $(SERVICE_NAME)
 
 .PHONY: test-debug
-test-debug: build-debug
+test-debug: build-debug venv-debug
 	@cd tests && \
-	  ~/.local/bin/pytest --build-dir=$(DEBUG_BUILDDIR)
+        $(DEBUG_BUILDDIR)/tests/venv/bin/pytest --build-dir=$(DEBUG_BUILDDIR)
 
 
 ################################## Release
@@ -48,11 +54,17 @@ $(RELEASE_BUILDDIR)/Makefile:
 .PHONY: cmake-release
 cmake-release: $(RELEASE_BUILDDIR)/Makefile
 
+$(RELEASE_BUILDDIR)/tests/venv/pyvenv.cfg:
+	@cmake --build $(RELEASE_BUILDDIR) -j$(NPROCS) --target testsuite-venv
+
+.PHONY: venv-release
+venv-release: $(RELEASE_BUILDDIR)/tests/venv/pyvenv.cfg
+
 .PHONY: build-release
 build-release: cmake-release
 	@cmake --build $(RELEASE_BUILDDIR) -j$(NPROCS) --target $(SERVICE_NAME)
 
 .PHONY: test-release
-test-release: build-release
+test-release: build-release venv-release
 	@cd tests && \
-	  ~/.local/bin/pytest --build-dir=$(RELEASE_BUILDDIR)
+        $(RELEASE_BUILDDIR)/tests/venv/bin/pytest --build-dir=$(RELEASE_BUILDDIR)
