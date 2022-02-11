@@ -64,14 +64,14 @@ jobs:
           - name: Checkout testsuite
             uses: actions/checkout@v2
             with:
-                repository: git@github.com:yandex/yandex-taxi-testsuite.git
+                repository: yandex/yandex-taxi-testsuite.git
                 ref: develop
                 path: third_party/testsuite
 
           - name: Checkout userver
             uses: actions/checkout@v2
             with:
-                repository: git@github.com:userver-framework/userver.git
+                repository: userver-framework/userver.git
                 ref: master
                 path: third_party/userver
                 ssh-key: '${{ secrets.USERVER_DEPLOY_PRIVATE_KEY }}'
