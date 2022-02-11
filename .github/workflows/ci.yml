@@ -65,24 +65,7 @@ jobs:
                 eval `ssh-agent -s`
                 echo "${{secrets.USERVER_DEPLOY_PRIVATE_KEY}}" | ssh-add -
                 git submodule update --init
-
-          # - name: Checkout service_template
-          #   uses: actions/checkout@v2
-
-          # - name: Checkout testsuite
-          #   uses: actions/checkout@v2
-          #   with:
-          #       repository: yandex/yandex-taxi-testsuite.git
-          #       ref: develop
-          #       path: third_party/testsuite
-
-          # - name: Checkout userver
-          #   uses: actions/checkout@v2
-          #   with:
-          #       repository: userver-framework/userver.git
-          #       ref: develop
-          #       path: third_party/userver
-          #       ssh-key: '${{secrets.USERVER_DEPLOY_PRIVATE_KEY}}'
+                ssh-add -d userver-framework-deploy@example.com
 
           # TODO: after making userver public replace the above steps with the following:
           # - uses: actions/checkout@v2
@@ -106,6 +89,10 @@ jobs:
             run: |
                 ccache -M 2.0GB
                 ccache -s
+
+          - name: pip testsuite
+            run: |
+                pip3 install third_party/testsuite
 
           - name: Run ${{matrix.make}}
             run: |
