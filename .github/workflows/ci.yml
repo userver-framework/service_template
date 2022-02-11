@@ -59,6 +59,8 @@ jobs:
 
         steps:
           - uses: actions/checkout@v2
+            with:
+                submodules: true
 
           - name: Reuse ccache directory
             uses: actions/cache@v2
@@ -80,5 +82,4 @@ jobs:
 
           - name: Run ${{matrix.make}}
             run: |
-                git submodule update --init
                 make ${{matrix.make}} ||:
