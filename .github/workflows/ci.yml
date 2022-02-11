@@ -59,13 +59,13 @@ jobs:
 
         steps:
           - uses: actions/checkout@v2
-          
+
           - name: SSH setup
             run: |
                 eval `ssh-agent -s`
                 echo "${{secrets.USERVER_DEPLOY_PRIVATE_KEY}}" | ssh-add -
                 git submodule update --init
-                ssh-add -d userver-framework-deploy@example.com
+                ssh-add -D
 
           # TODO: after making userver public replace the above steps with the following:
           # - uses: actions/checkout@v2
