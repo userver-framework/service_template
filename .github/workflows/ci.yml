@@ -79,4 +79,4 @@ jobs:
                 ccache -s
 
           - name: Run ${{matrix.make}}
-            run: make matrix.make
+            run: make ${{matrix.make}} ||:
