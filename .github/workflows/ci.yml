@@ -63,9 +63,9 @@ jobs:
                 eval `ssh-agent -s`
                 echo "${{secrets.USERVER_DEPLOY_PRIVATE_KEY}}" | ssh-add -
 
-            - uses: actions/checkout@v2
-              with:
-                  submodules: true        
+          - uses: actions/checkout@v2
+            with:
+                submodules: true        
         
           # - name: Checkout service_template
           #   uses: actions/checkout@v2
