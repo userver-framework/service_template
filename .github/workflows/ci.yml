@@ -75,6 +75,7 @@ jobs:
                 ref: develop
                 path: third_party/userver
                 ssh-key: '${{ secrets.USERVER_DEPLOY_PRIVATE_KEY }}'
+                persist-credentials: false
 
           # TODO: after making userver public replace the above steps with the following:
           # - uses: actions/checkout@v2
