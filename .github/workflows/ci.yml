@@ -58,6 +58,22 @@ jobs:
         runs-on: ${{matrix.os}}
 
         steps:
+          - name: Checkout service_template
+            uses: actions/checkout@v2
+
+          - name: Checkout testsuite
+            uses: actions/checkout@v2
+            with:
+                repository: git@github.com:yandex/yandex-taxi-testsuite.git
+                path: third_party/testsuite
+
+          - name: Checkout userver
+            uses: actions/checkout@v2
+            with:
+                repository: git@github.com:userver-framework/userver.git
+                path: third_party/userver
+                ssh-key: '${{ secrets.USERVER_DEPLOY_PRIVATE_KEY }}'
+
           - uses: actions/checkout@v2
             with:
                 ssh-key: '${{ secrets.USERVER_DEPLOY_PRIVATE_KEY }}'
