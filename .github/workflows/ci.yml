@@ -60,7 +60,7 @@ jobs:
         steps:
           - uses: actions/checkout@v2
             with:
-                token: '${{ secrets.GITHUB_PAT }}'
+                ssh-key: '${{ secrets.USERVER_DEPLOY_PRIVATE_KEY }}'
                 submodules: true
 
           - name: Reuse ccache directory
