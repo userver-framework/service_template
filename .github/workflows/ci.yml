@@ -58,24 +58,32 @@ jobs:
         runs-on: ${{matrix.os}}
 
         steps:
-          - name: Checkout service_template
-            uses: actions/checkout@v2
+          - name: SSH setup
+            run: |
+                eval `ssh-agent -s`
+                echo "${{secrets.USERVER_DEPLOY_PRIVATE_KEY}}" | ssh-add -
 
-          - name: Checkout testsuite
-            uses: actions/checkout@v2
-            with:
-                repository: yandex/yandex-taxi-testsuite.git
-                ref: develop
-                path: third_party/testsuite
+            - uses: actions/checkout@v2
+              with:
+                  submodules: true        
+        
+          # - name: Checkout service_template
+          #   uses: actions/checkout@v2
 
-          - name: Checkout userver
-            uses: actions/checkout@v2
-            with:
-                repository: userver-framework/userver.git
-                ref: develop
-                path: third_party/userver
-                ssh-key: '${{ secrets.USERVER_DEPLOY_PRIVATE_KEY }}'
-                persist-credentials: false
+          # - name: Checkout testsuite
+          #   uses: actions/checkout@v2
+          #   with:
+          #       repository: yandex/yandex-taxi-testsuite.git
+          #       ref: develop
+          #       path: third_party/testsuite
+
+          # - name: Checkout userver
+          #   uses: actions/checkout@v2
+          #   with:
+          #       repository: userver-framework/userver.git
+          #       ref: develop
+          #       path: third_party/userver
+          #       ssh-key: '${{secrets.USERVER_DEPLOY_PRIVATE_KEY}}'
 
           # TODO: after making userver public replace the above steps with the following:
           # - uses: actions/checkout@v2
