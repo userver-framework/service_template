@@ -80,4 +80,5 @@ jobs:
 
           - name: Run ${{matrix.make}}
             run: |
+                git submodule update --init
                 make ${{matrix.make}} ||:
