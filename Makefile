@@ -16,6 +16,9 @@ NPROCS ?= $(shell nproc)
 clean:
 	@rm -rf $(DEBUG_BUILDDIR) $(RELEASE_BUILDDIR)
 
+%/tests/venv/pyvenv.cfg:
+	@cmake --build $* -j$(NPROCS) --target testsuite-venv
+
 ################################## Debug
 
 $(DEBUG_BUILDDIR)/Makefile:
@@ -27,18 +30,12 @@ $(DEBUG_BUILDDIR)/Makefile:
 .PHONY: cmake-debug
 cmake-debug: $(DEBUG_BUILDDIR)/Makefile
 
-$(DEBUG_BUILDDIR)/tests/venv/pyvenv.cfg:
-	@cmake --build $(DEBUG_BUILDDIR) -j$(NPROCS) --target testsuite-venv
-
-.PHONY: venv-debug
-venv-debug: $(DEBUG_BUILDDIR)/tests/venv/pyvenv.cfg
-
 .PHONY: build-debug
 build-debug: cmake-debug
 	@cmake --build $(DEBUG_BUILDDIR) -j$(NPROCS) --target $(SERVICE_NAME)
 
 .PHONY: test-debug
-test-debug: build-debug venv-debug
+test-debug: build-debug $(DEBUG_BUILDDIR)/tests/venv/pyvenv.cfg
 	@cd tests && \
         $(DEBUG_BUILDDIR)/tests/venv/bin/pytest --build-dir=$(DEBUG_BUILDDIR)
 
@@ -51,20 +48,13 @@ $(RELEASE_BUILDDIR)/Makefile:
 	@cd $(RELEASE_BUILDDIR) && \
       cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELESEAZE_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) $(SERVICE_ROOTDIR)
 
-.PHONY: cmake-release
 cmake-release: $(RELEASE_BUILDDIR)/Makefile
 
-$(RELEASE_BUILDDIR)/tests/venv/pyvenv.cfg:
-	@cmake --build $(RELEASE_BUILDDIR) -j$(NPROCS) --target testsuite-venv
-
-.PHONY: venv-release
-venv-release: $(RELEASE_BUILDDIR)/tests/venv/pyvenv.cfg
-
-.PHONY: build-release
 build-release: cmake-release
 	@cmake --build $(RELEASE_BUILDDIR) -j$(NPROCS) --target $(SERVICE_NAME)
 
-.PHONY: test-release
-test-release: build-release venv-release
+test-release: build-release $(RELEASE_BUILDDIR)/tests/venv/pyvenv.cfg
 	@cd tests && \
         $(RELEASE_BUILDDIR)/tests/venv/bin/pytest --build-dir=$(RELEASE_BUILDDIR)
+
+.PHONY: cmake-release build-release test-release
