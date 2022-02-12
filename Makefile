@@ -1,8 +1,3 @@
-SERVICE_ROOTDIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
-SERVICE_NAME := service_template
-
-DEBUG_BUILDDIR ?= $(SERVICE_ROOTDIR)/build_debug
-RELEASE_BUILDDIR ?= $(SERVICE_ROOTDIR)/build_release
 CMAKE_COMMON_FLAGS ?= -DOPEN_SOURCE_BUILD=1 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 CMAKE_DEBUG_FLAGS ?= -DSANITIZE='addr ub'
 CMAKE_RELESEAZE_FLAGS ?=
@@ -10,61 +5,59 @@ CMAKE_OS_FLAGS ?= -DUSERVER_FEATURE_CRYPTOPP_BLAKE2=0 -DUSERVER_FEATURE_REDIS_HI
 NPROCS ?= $(shell nproc)
 
 # NOTE: use Makefile.local for customization
--include $(SERVICE_ROOTDIR)/Makefile.local
+-include Makefile.local
 
-.PHONY: clean
-clean:
-	@rm -rf $(DEBUG_BUILDDIR) $(RELEASE_BUILDDIR)
+# Debug cmake configuration
+build_debug/Makefile:
+	@mkdir -p build_debug
+	@cd build_debug && \
+      cmake -DCMAKE_BUILD_TYPE=Debug $(CMAKE_COMMON_FLAGS) $(CMAKE_DEBUG_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) ..
 
-################################## Debug
+# Release cmake configuration
+build_release/Makefile:
+	@mkdir -p build_release
+	@cd build_release && \
+      cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELESEAZE_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) ..
 
-$(DEBUG_BUILDDIR)/Makefile:
-	@echo "Makefile: CC = ${CC} CXX = ${CXX}"
-	@mkdir -p $(DEBUG_BUILDDIR)
-	@cd $(DEBUG_BUILDDIR) && \
-      cmake -DCMAKE_BUILD_TYPE=Debug $(CMAKE_COMMON_FLAGS) $(CMAKE_DEBUG_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) $(SERVICE_ROOTDIR)
+# virtualenv setup for running pytests
+build_%/tests/venv/pyvenv.cfg: build_%/Makefile
+	@cmake --build build_$* -j$(NPROCS) --target testsuite-venv
 
-.PHONY: cmake-debug
-cmake-debug: $(DEBUG_BUILDDIR)/Makefile
+# build using cmake
+build-impl-%: build_%/Makefile
+	@cmake --build build_$* -j$(NPROCS) --target service_template
 
-$(DEBUG_BUILDDIR)/tests/venv/pyvenv.cfg:
-	@cmake --build $(DEBUG_BUILDDIR) -j$(NPROCS) --target testsuite-venv
-
-.PHONY: venv-debug
-venv-debug: $(DEBUG_BUILDDIR)/tests/venv/pyvenv.cfg
-
-.PHONY: build-debug
-build-debug: cmake-debug
-	@cmake --build $(DEBUG_BUILDDIR) -j$(NPROCS) --target $(SERVICE_NAME)
-
-.PHONY: test-debug
-test-debug: build-debug venv-debug
+# test
+test-impl-%: build-impl-% build_%/tests/venv/pyvenv.cfg
 	@cd tests && \
-        $(DEBUG_BUILDDIR)/tests/venv/bin/pytest --build-dir=$(DEBUG_BUILDDIR)
+        ../build_$*/tests/venv/bin/pytest --build-dir=../build_$*
+	@pep8 tests
 
+# clean
+clean-impl-%:
+	cd build_$* && $(MAKE) clean
 
-################################## Release
+# dist-clean
+.PHONY: dist-clean
+dist-clean:
+	@rm -rf build_*
 
-$(RELEASE_BUILDDIR)/Makefile:
-	@echo "Makefile: CC = ${CC} CXX = ${CXX}"
-	@mkdir -p $(RELEASE_BUILDDIR)
-	@cd $(RELEASE_BUILDDIR) && \
-      cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELESEAZE_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) $(SERVICE_ROOTDIR)
+# format
+.PHONY: format
+format:
+	@find src -name '*pp' -type f | xargs clang-format -i
 
-.PHONY: cmake-release
-cmake-release: $(RELEASE_BUILDDIR)/Makefile
+.PHONY: cmake-debug build-debug test-debug clean-debug cmake-release build-release test-release clean-release
 
-$(RELEASE_BUILDDIR)/tests/venv/pyvenv.cfg:
-	@cmake --build $(RELEASE_BUILDDIR) -j$(NPROCS) --target testsuite-venv
+# Explicitly specifying the targets to help shell with completitions
+cmake-debug: build_debug/Makefile
+cmake-release: build_release/Makefile
 
-.PHONY: venv-release
-venv-release: $(RELEASE_BUILDDIR)/tests/venv/pyvenv.cfg
+build-debug: build-impl-debug
+build-release: build-impl-release
 
-.PHONY: build-release
-build-release: cmake-release
-	@cmake --build $(RELEASE_BUILDDIR) -j$(NPROCS) --target $(SERVICE_NAME)
+test-debug: test-impl-debug
+test-release: test-impl-release
 
-.PHONY: test-release
-test-release: build-release venv-release
-	@cd tests && \
-        $(RELEASE_BUILDDIR)/tests/venv/bin/pytest --build-dir=$(RELEASE_BUILDDIR)
+clean-debug: clean-impl-debug
+clean-release: clean-impl-release

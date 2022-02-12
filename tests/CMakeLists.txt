@@ -22,7 +22,7 @@ add_custom_target(
 )
 
 add_test(
-  NAME sample_project-testsuite
+  NAME service_template-testsuite
   COMMAND ${CMAKE_CURRENT_BINARY_DIR}/venv/bin/pytest
   -vv --build-dir=${CMAKE_BINARY_DIR}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}

@@ -30,7 +30,7 @@ jobs:
                         libgrpc++-dev
                         libgrpc++1 protobuf-compiler-grpc libprotoc-dev python3-protobuf
                         python3-jinja2
-                        libbenchmark-dev libgtest-dev libgmock-dev ccache git virtualenv
+                        libbenchmark-dev libgtest-dev libgmock-dev ccache git virtualenv pep8
                     os: ubuntu-20.04
                     make: test-debug
                     info: g++-9 + test-debug
@@ -49,7 +49,7 @@ jobs:
                         libgrpc++-dev
                         libgrpc++1 protobuf-compiler-grpc libprotoc-dev python3-protobuf
                         python3-jinja2
-                        libbenchmark-dev libgtest-dev libgmock-dev ccache git virtualenv
+                        libbenchmark-dev libgtest-dev libgmock-dev ccache git virtualenv pep8
                     os: ubuntu-20.04
                     make: test-release
                     info: g++-9 + test-release

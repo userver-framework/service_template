@@ -18,9 +18,8 @@ def pytest_addoption(parser) -> None:
     group = parser.getgroup('userver')
     group.addoption(
         '--build-dir',
-        default=pathlib.Path.cwd() / '../build',
         type=pathlib.Path,
-        help='Path to uservice build directory.',
+        help='Path to service build directory.',
     )
 
 
@@ -72,15 +71,7 @@ def _copy_service_configs(
         destination: pathlib.Path,
         configs_path: pathlib.Path,
 ) -> None:
-    path_suffixes = [
-        'static_config.yaml',
-        'dynamic_config_fallback.json',
-        'config_vars.yaml',
-        'secure_data.json',
-    ]
-
-    for path_suffix in path_suffixes:
-        source_path = configs_path / path_suffix
+    for source_path in configs_path.iterdir():
         if not source_path.is_file():
             continue
 
@@ -89,4 +80,4 @@ def _copy_service_configs(
         conf = conf.replace('/var/cache/' + service_name, str(destination))
         conf = conf.replace('/var/log/' + service_name, str(destination))
         conf = conf.replace('/var/run/' + service_name, str(destination))
-        (destination / path_suffix).write_text(conf)
+        (destination / source_path.name).write_text(conf)
