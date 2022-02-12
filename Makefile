@@ -31,7 +31,7 @@ build-impl-%: build_%/Makefile
 test-impl-%: build-impl-% build_%/tests/venv/pyvenv.cfg
 	@cd tests && \
         ../build_$*/tests/venv/bin/pytest --build-dir=../build_$*
-    @pep8 tests
+	@pep8 tests
 
 # clean
 clean-impl-%:
