@@ -1,5 +1,4 @@
 SERVICE_ROOTDIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
-SERVICE_NAME := service_template
 
 CMAKE_COMMON_FLAGS ?= -DOPEN_SOURCE_BUILD=1 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 CMAKE_DEBUG_FLAGS ?= -DSANITIZE='addr ub'
@@ -30,7 +29,7 @@ $(SERVICE_ROOTDIR)/build_%/tests/venv/pyvenv.cfg: $(SERVICE_ROOTDIR)/build_%/Mak
 
 # build using cmake
 build-impl-%: $(SERVICE_ROOTDIR)/build_%/Makefile
-	@cmake --build $(SERVICE_ROOTDIR)/build_$* -j$(NPROCS) --target $(SERVICE_NAME)
+	@cmake --build $(SERVICE_ROOTDIR)/build_$* -j$(NPROCS) --target service_template
 
 # test
 test-impl-%: build-impl-% $(SERVICE_ROOTDIR)/build_%/tests/venv/pyvenv.cfg
@@ -38,8 +37,8 @@ test-impl-%: build-impl-% $(SERVICE_ROOTDIR)/build_%/tests/venv/pyvenv.cfg
         $(SERVICE_ROOTDIR)/build_$*/tests/venv/bin/pytest --build-dir=$(SERVICE_ROOTDIR)/build_$*
 
 # clean
-clean-%:
-	cd $* && $(MAKE) clean
+clean-impl-%:
+	cd build_$* && $(MAKE) clean
 
 # dist-clean
 .PHONY: dist-clean
@@ -47,7 +46,7 @@ dist-clean:
 	@rm -rf build_*
 
 # Helping shell with completitions:
-.PHONY: cmake-debug build-debug test-debug cmake-release build-release test-release
+.PHONY: cmake-debug build-debug test-debug clean-debug cmake-release build-release test-release clean-release
 
 cmake-debug: $(SERVICE_ROOTDIR)/build_debug/Makefile
 cmake-release: $(SERVICE_ROOTDIR)/build_release/Makefile
@@ -57,3 +56,6 @@ build-release: build-impl-release
 
 test-debug: test-impl-debug
 test-release: test-impl-release
+
+clean-debug: clean-impl-debug
+clean-release: clean-impl-release
