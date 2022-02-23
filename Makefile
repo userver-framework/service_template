@@ -21,7 +21,7 @@ build_release/Makefile:
 
 # virtualenv setup for running pytests
 build_%/tests/venv/pyvenv.cfg: build_%/Makefile
-	@cmake --build build_$* -j$(NPROCS) --target testsuite-venv
+	@cmake --build build_$* -j$(NPROCS) --target testsuite-venv-all
 
 # build using cmake
 build-impl-%: build_%/Makefile
@@ -30,7 +30,7 @@ build-impl-%: build_%/Makefile
 # test
 test-impl-%: build-impl-% build_%/tests/venv/pyvenv.cfg
 	@cd tests && \
-        ../build_$*/tests/venv/bin/pytest --build-dir=../build_$*
+        ../build_$*/tests/venv-service_template-testsuite/bin/pytest --build-dir=../build_$*
 	@pep8 tests
 
 # clean
