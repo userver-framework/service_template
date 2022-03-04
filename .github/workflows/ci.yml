@@ -17,40 +17,11 @@ jobs:
             fail-fast: false
             matrix:
                 include:
-                  - install: >-
-                        cmake libboost1.67-dev libboost-program-options1.67-dev libboost-filesystem1.67-dev
-                        libboost-locale1.67-dev libboost-regex1.67-dev libboost-iostreams1.67-dev
-                        libboost-thread1.67-dev
-                        libev-dev zlib1g-dev
-                        libcurl4-openssl-dev libcrypto++-dev libyaml-cpp-dev libssl-dev
-                        libcctz-dev
-                        libhttp-parser-dev libjemalloc-dev libmongoc-dev libbson-dev
-                        libldap2-dev libpq5=12.* libpq-dev=12.*
-                        postgresql-server-dev-12 libkrb5-dev libhiredis-dev libgrpc-dev
-                        libgrpc++-dev
-                        libgrpc++1 protobuf-compiler-grpc libprotoc-dev python3-protobuf
-                        python3-jinja2
-                        libbenchmark-dev libgtest-dev libgmock-dev ccache git virtualenv pep8
-                    os: ubuntu-20.04
+                  - os: ubuntu-20.04
                     make: test-debug
                     info: g++-9 + test-debug
-                    tests-flags: '--gtest_filter=-HttpClient.Cancel*:HttpClient.Retr*:HttpClient.RedirectHeaders'
 
-                  - install: >-
-                        cmake libboost1.67-dev libboost-program-options1.67-dev libboost-filesystem1.67-dev
-                        libboost-locale1.67-dev libboost-regex1.67-dev libboost-iostreams1.67-dev
-                        libboost-thread1.67-dev
-                        libev-dev zlib1g-dev
-                        libcurl4-openssl-dev libcrypto++-dev libyaml-cpp-dev libssl-dev
-                        libcctz-dev
-                        libhttp-parser-dev libjemalloc-dev libmongoc-dev libbson-dev
-                        libldap2-dev libpq5=12.* libpq-dev=12.*
-                        postgresql-server-dev-12 libkrb5-dev libhiredis-dev libgrpc-dev
-                        libgrpc++-dev
-                        libgrpc++1 protobuf-compiler-grpc libprotoc-dev python3-protobuf
-                        python3-jinja2
-                        libbenchmark-dev libgtest-dev libgmock-dev ccache git virtualenv pep8
-                    os: ubuntu-20.04
+                  - os: ubuntu-20.04
                     make: test-release
                     info: g++-9 + test-release
 
@@ -82,8 +53,8 @@ jobs:
                     ${{matrix.os}} ${{matrix.info}} ccache-
 
           - name: Install packages
-            if: matrix.install
-            run: sudo apt install --allow-downgrades -y ${{matrix.install}}
+            run: |
+                sudo apt install --allow-downgrades -y pep8 $(cat third_party/userver/scripts/docs/en/deps/${{matrix.os}}.md | tr '\n' ' ')
 
           - name: Setup ccache
             run: |
