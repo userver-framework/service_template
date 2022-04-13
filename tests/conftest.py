@@ -60,7 +60,7 @@ async def service_template_daemon(
                 '--config',
                 str(temp_dir_name.joinpath('static_config.yaml')),
             ],
-            check_url=SERVICE_BASEURL + 'ping',
+            ping_url=SERVICE_BASEURL + 'ping',
     ) as scope:
         yield scope
 
