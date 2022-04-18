@@ -41,6 +41,7 @@ dist-clean:
 .PHONY: format
 format:
 	@find src -name '*pp' -type f | xargs clang-format -i
+	@find tests -name '*.py' -type f | xargs autopep8 -i
 
 .PHONY: cmake-debug build-debug test-debug clean-debug cmake-release build-release test-release clean-release
 
