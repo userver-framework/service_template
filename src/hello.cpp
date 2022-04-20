@@ -1,5 +1,7 @@
 #include "hello.hpp"
 
+#include <fmt/format.h>
+
 #include <userver/server/handlers/http_handler_base.hpp>
 
 namespace service_template {
@@ -13,13 +15,21 @@ public:
   using HttpHandlerBase::HttpHandlerBase;
 
   std::string HandleRequestThrow(
-      const userver::server::http::HttpRequest &,
+      const userver::server::http::HttpRequest &request,
       userver::server::request::RequestContext &) const override {
-    return "Hello world!\n";
+    return service_template::SayHelloTo(request.GetArg("name"));
   }
 };
 
 } // namespace
+
+std::string SayHelloTo(std::string_view name) {
+  if (name.empty()) {
+    name = "unknown user";
+  }
+
+  return fmt::format("Hello, {}!\n", name);
+}
 
 void AppendHello(userver::components::ComponentList &component_list) {
   component_list.Append<Hello>();
