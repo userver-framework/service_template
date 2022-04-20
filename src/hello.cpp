@@ -17,7 +17,7 @@ public:
   std::string HandleRequestThrow(
       const userver::server::http::HttpRequest &request,
       userver::server::request::RequestContext &) const override {
-    return SayHelloTo(request.GetArg("name"));
+    return service_template::SayHelloTo(request.GetArg("name"));
   }
 };
 
@@ -27,6 +27,7 @@ std::string SayHelloTo(std::string_view name) {
   if (name.empty()) {
     name = "unknown user";
   }
+
   return fmt::format("Hello, {}!\n", name);
 }
 
