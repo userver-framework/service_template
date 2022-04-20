@@ -7,6 +7,8 @@ NPROCS ?= $(shell nproc)
 # NOTE: use Makefile.local for customization
 -include Makefile.local
 
+all: test-debug test-release
+
 # Debug cmake configuration
 build_debug/Makefile:
 	@mkdir -p build_debug
@@ -25,7 +27,8 @@ build-impl-%: build_%/Makefile
 
 # test
 test-impl-%: build-impl-%
-	@cd build_$* && ctest -R service_template-testsuite
+	@cmake --build build_$* -j$(NPROCS) --target service_template_unittest
+	@cd build_$* && ctest -V
 	@pep8 tests
 
 # clean

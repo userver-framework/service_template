@@ -4,9 +4,7 @@ name: CI
     pull_request:
     push:
         branches:
-          - master
           - develop
-          - feature/**
 
 env:
     UBSAN_OPTIONS: print_stacktrace=1
