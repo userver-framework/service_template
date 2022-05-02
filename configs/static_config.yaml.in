@@ -15,7 +15,7 @@ components_manager:
 
         fs-task-processor:            # Make a separate task processor for filesystem bound tasks.
             thread_name: fs-worker
-            worker_threads: $worker-threads
+            worker_threads: $worker-fs-threads
 
     default_task_processor: main-task-processor
 
