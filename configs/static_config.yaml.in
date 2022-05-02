@@ -1,4 +1,7 @@
 # yaml
+
+config_vars: @CONFIG_VAR_PATH@
+
 components_manager:
     coro_pool:
         initial_size: 500             # Preallocate 500 coroutines at startup.
@@ -49,7 +52,8 @@ components_manager:
             load-enabled: $is_testing
             path: /tests/control
             method: POST
-            task_processor: main-task-processor        handler-ping:
+            task_processor: main-task-processor
+        handler-ping:
             path: /ping
             method: GET
             task_processor: main-task-processor
