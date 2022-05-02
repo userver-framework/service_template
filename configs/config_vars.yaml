@@ -1,0 +1,6 @@
+worker-threads: 4
+logger-level: debug
+
+is_testing: false
+
+server-port: 8080

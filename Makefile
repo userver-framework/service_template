@@ -46,7 +46,11 @@ format:
 	@find src -name '*pp' -type f | xargs clang-format -i
 	@find tests -name '*.py' -type f | xargs autopep8 -i
 
-.PHONY: cmake-debug build-debug test-debug clean-debug cmake-release build-release test-release clean-release
+.PHONY: cmake-debug build-debug test-debug clean-debug cmake-release build-release test-release clean-release install
+
+install: build-release
+	@cd build_release && \
+		cmake --install . -v --component service_template
 
 # Explicitly specifying the targets to help shell with completitions
 cmake-debug: build_debug/Makefile
