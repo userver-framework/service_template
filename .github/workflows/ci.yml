@@ -28,18 +28,8 @@ jobs:
 
         steps:
           - uses: actions/checkout@v2
-
-          - name: SSH setup
-            run: |
-                eval `ssh-agent -s`
-                echo "${{secrets.USERVER_DEPLOY_PRIVATE_KEY}}" | ssh-add -
-                git submodule update --init
-                ssh-add -D
-
-          # TODO: after making userver public replace the above steps with the following:
-          # - uses: actions/checkout@v2
-          #   with:
-          #       submodules: true
+            with:
+                submodules: true
 
           - name: Reuse ccache directory
             uses: actions/cache@v2
