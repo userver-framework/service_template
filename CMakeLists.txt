@@ -31,11 +31,7 @@ add_executable(${PROJECT_NAME}_benchmark
 	src/hello_benchmark.cpp
 )
 target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME}_objs userver-ubench)
-# TODO
-# add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
-add_test(NAME ${PROJECT_NAME}_benchmark COMMAND $<TARGET_FILE:${PROJECT_NAME}_benchmark>
-	--benchmark_min_time=0
-)
+add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
 
 # Functional Tests
 add_subdirectory(tests)
