@@ -1,5 +1,9 @@
 #include "hello.hpp"
 
+#include <cstdint>  // for std::uint64_t
+#include <string_view>
+#include <iterator>  // for std::size
+
 #include <benchmark/benchmark.h>
 #include <userver/engine/run_standalone.hpp>
 

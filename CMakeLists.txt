@@ -33,7 +33,7 @@ add_executable(${PROJECT_NAME}_benchmark
 target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME}_objs userver-ubench)
 # TODO
 # add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
-add_test(NAME ${target} COMMAND $<TARGET_FILE:${PROJECT_NAME}_benchmark>
+add_test(NAME ${PROJECT_NAME}_benchmark COMMAND $<TARGET_FILE:${PROJECT_NAME}_benchmark>
 	--benchmark_min_time=0
 )
 
