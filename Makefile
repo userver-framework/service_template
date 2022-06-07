@@ -28,6 +28,7 @@ build-impl-%: build_%/Makefile
 # test
 test-impl-%: build-impl-%
 	@cmake --build build_$* -j$(NPROCS) --target service_template_unittest
+	@cmake --build build_$* -j$(NPROCS) --target service_template_benchmark
 	@cd build_$* && ctest -V
 	@pep8 tests
 
