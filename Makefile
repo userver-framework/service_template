@@ -1,6 +1,6 @@
 CMAKE_COMMON_FLAGS ?= -DUSERVER_OPEN_SOURCE_BUILD=1 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 CMAKE_DEBUG_FLAGS ?= -DUSERVER_SANITIZE='addr ub'
-CMAKE_RELESEAZE_FLAGS ?=
+CMAKE_RELEASE_FLAGS ?=
 CMAKE_OS_FLAGS ?= -DUSERVER_FEATURE_CRYPTOPP_BLAKE2=0 -DUSERVER_FEATURE_REDIS_HI_MALLOC=1
 NPROCS ?= $(shell nproc)
 
@@ -19,7 +19,7 @@ build_debug/Makefile:
 build_release/Makefile:
 	@mkdir -p build_release
 	@cd build_release && \
-      cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELESEAZE_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) ..
+      cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELEASE_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) ..
 
 # build using cmake
 build-impl-%: build_%/Makefile
@@ -28,6 +28,7 @@ build-impl-%: build_%/Makefile
 # test
 test-impl-%: build-impl-%
 	@cmake --build build_$* -j$(NPROCS) --target service_template_unittest
+	@cmake --build build_$* -j$(NPROCS) --target service_template_benchmark
 	@cd build_$* && ctest -V
 	@pep8 tests
 
@@ -52,7 +53,7 @@ install: build-release
 	@cd build_release && \
 		cmake --install . -v --component service_template
 
-# Explicitly specifying the targets to help shell with completitions
+# Explicitly specifying the targets to help shell with completions
 cmake-debug: build_debug/Makefile
 cmake-release: build_release/Makefile
 
