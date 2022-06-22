@@ -39,9 +39,6 @@ components_manager:
             fs-cache-path: ''
         dynamic-config-fallbacks:            # Load options from file and push them into the dynamic config storage.
             fallback-path: @CONFIG_FALLBACK_PATH@
-        manager-controller:
-        statistics-storage:
-        auth-checker-settings:
         testsuite-support: {}
 
         http-client:
