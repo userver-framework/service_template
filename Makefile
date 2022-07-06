@@ -23,13 +23,13 @@ build_release/Makefile:
 
 # build using cmake
 build-impl-%: build_%/Makefile
-	@cmake --build build_$* -j$(NPROCS) --target service_template
+	@cmake --build build_$* -j $(NPROCS) --target service_template
 
 # test
 test-impl-%: build-impl-%
-	@cmake --build build_$* -j$(NPROCS) --target service_template_unittest
-	@cmake --build build_$* -j$(NPROCS) --target service_template_benchmark
-	@cd build_$* && ctest -V
+	@cmake --build build_$* -j $(NPROCS) --target service_template_unittest
+	@cmake --build build_$* -j $(NPROCS) --target service_template_benchmark
+	@cd build_$* && ((test -t 1 && GTEST_COLOR=1 PYTEST_ADDOPTS="--color=yes" ctest -V) || ctest -V)
 	@pep8 tests
 
 # clean
