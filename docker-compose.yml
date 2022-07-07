@@ -1,0 +1,31 @@
+version: "2.3"
+
+services:
+    service_template:
+        image: ghcr.io/userver-framework/docker-userver-build-base:release
+        privileged: true
+        network_mode: bridge
+        environment:
+          - BUILD_DIR=${BUILD_DIR:-/build}
+          - BUILD_TYPE=${BUILD_TYPE:-Release}
+          - PREFIX=${PREFIX:-~/.local}
+          - CC
+          - CCACHE_DIR=/ccache
+          - CCACHE_HASHDIR
+          - CCACHE_NOHASHDIR
+          - CCACHE_PREFIX
+          - CCACHE_SIZE
+          - CMAKE_OPTS
+          - CORES_DIR=/cores
+          - CXX
+          - MAKE_OPTS
+        volumes:
+          - .:/service_template:rw
+          - ./third_party/userver/tools/docker:/tools:ro
+          - ${CCACHE_DIR:-~/.ccache}:/ccache:rw
+          - ${TC_CORES_DIR:-./cores}:/cores:rw
+        ports:
+          - 8080:8080
+        working_dir: /service_template
+        entrypoint:
+          - /tools/run_as_user.sh

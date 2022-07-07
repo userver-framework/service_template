@@ -53,6 +53,24 @@ install: build-release
 	@cd build_release && \
 		cmake --install . -v --component service_template
 
+install-debug: build-debug
+	@cd build_debug && \
+		cmake --install . -v --component service_template
+
+# Hide target, use only in docker enviroment
+--debug-start-in-docker: install-debug
+	@/home/user/.local/bin/service_template \
+		--config /home/user/.local/etc/service_template/static_config.yaml
+
+# Build and run service in docker enviroment
+docker-start-service:
+	@rm -f ./configs/static_config.yaml
+	@docker-compose run -p 8080:8080 --rm service_template make -- --debug-start-in-docker
+
+# Start targets makefile in docker enviroment
+docker-%:
+	docker-compose run --rm service_template make $*
+
 # Explicitly specifying the targets to help shell with completions
 cmake-debug: build_debug/Makefile
 cmake-release: build_release/Makefile
