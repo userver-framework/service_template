@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.12)
 project(service_template CXX)
 
 include(third_party/userver/cmake/SetupEnvironment.cmake)
+include(GNUInstallDirs)
+
 add_subdirectory(third_party/userver)
 
 
@@ -41,9 +43,6 @@ if(DEFINED ENV{PREFIX})
 	file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
 	set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
 endif()
-
-SET(CMAKE_INSTALL_SYSCONFDIR etc CACHE STRING "Set sysconf dir")
-SET(CMAKE_INSTALL_BINDIR bin CACHE STRING "Set binary dir")
 
 set(CONFIG_VAR_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME}/config_vars.yaml)
 set(CONFIG_FALLBACK_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME}/dynamic_config_fallback.json)
