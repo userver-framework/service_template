@@ -25,6 +25,12 @@ Makefile contains typicaly useful targets for development:
 * `make format` - autoformat all the C++ and Python sources
 * `make clean-` - cleans the object files
 * `make dist-clean` - clean all, including the CMake cached configurations
+* `make install` - does a `make build-release` and run install in directory set in enviroment `PREFIX`
+* `make install-debug` - does a `make build-debug` and run install in directory set in enviroment `PREFIX`
+* `make docker-` - run target make file in docker enviroment
+* `make docker-build-debug` - debug build of the service with all the assertions and sanitizers enabled in docker enviroment
+* `make docker-test-debug` - does a `make build-debug` and runs all the tests on the result in docker enviroment
+* `make docker-start-service` - does a `make install-debug` and run service in docker enviroment
 
 Edit `Makefile.local` to change the default configuration and build options.
 
