@@ -68,7 +68,7 @@ install-debug: build-debug
 	@/home/user/.local/bin/service_template \
 		--config /home/user/.local/etc/service_template/static_config.yaml
 
-.PHONY: docker-start-service-debug docker-start-service docker-clean-data 
+.PHONY: docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install docker-install-debug docker-start-service-debug docker-start-service docker-clean-data
 
 # Build and runs service in docker environment
 docker-start-service:
@@ -94,3 +94,18 @@ test-release: test-impl-release
 
 clean-debug: clean-impl-debug
 clean-release: clean-impl-release
+
+docker-cmake-debug: docker-impl-cmake-debug
+docker-cmake-release: docker-impl-cmake-release
+
+docker-build-debug: docker-impl-build-debug
+docker-build-release: docker-impl-build-release
+
+docker-test-debug: docker-impl-test-debug
+docker-test-release: docker-impl-test-release
+
+docker-clean-debug: docker-impl-clean-debug
+docker-clean-release: docker-impl-clean-release
+
+docker-install: docker-impl-install
+docker-install-debug: docker-impl-install-debug
