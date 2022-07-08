@@ -79,7 +79,7 @@ docker-start-service-debug:
 	@docker-compose run -p 8080:8080 --rm service_template make -- --debug-start-in-docker-debug
 
 # Start targets makefile in docker environment
-docker-%:
+docker-impl-%:
 	docker-compose run --rm service_template make $*
 
 # Explicitly specifying the targets to help shell with completions
