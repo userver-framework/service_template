@@ -6,8 +6,6 @@ services:
         privileged: true
         network_mode: bridge
         environment:
-          - BUILD_DIR=${BUILD_DIR:-/build}
-          - BUILD_TYPE=${BUILD_TYPE:-Release}
           - PREFIX=${PREFIX:-~/.local}
           - CC
           - CCACHE_DIR=/ccache
@@ -23,7 +21,7 @@ services:
           - .:/service_template:rw
           - ./third_party/userver/tools/docker:/tools:ro
           - ${CCACHE_DIR:-~/.ccache}:/ccache:rw
-          - ${TC_CORES_DIR:-./cores}:/cores:rw
+          - ${TC_CORES_DIR:-./.cores}:/cores:rw
         ports:
           - 8080:8080
         working_dir: /service_template
