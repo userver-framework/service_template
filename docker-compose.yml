@@ -19,7 +19,6 @@ services:
           - MAKE_OPTS
         volumes:
           - .:/service_template:rw
-          - ~/.ccache:/service_template/.ccache:rw
           - ./third_party/userver/tools/docker:/tools:ro
         ports:
           - 8080:8080

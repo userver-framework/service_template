@@ -19,14 +19,14 @@ jobs:
           - name: Reuse ccache directory
             uses: actions/cache@v2
             with:
-                path: ~/.ccache/
+                path: .ccache
                 key: 'ccache-dir-${{github.ref}}_run-${{github.run_number}}'
                 restore-keys: |
                     ccache-dir-${{github.ref}}_run-
                     ccache-
 
           - name: Setup ccache
-            run: mkdir .ccache && chmod 777 -R .ccache && docker-compose run --rm service_template bash -c 'ccache -M 2.0GB && ccache -s'
+            run: docker-compose run --rm service_template bash -c 'ccache -M 2.0GB && ccache -s'
 
           - name: Cmake
             run: make docker-cmake-release
