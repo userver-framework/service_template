@@ -4,6 +4,7 @@ compile_commands.json
 .cache/
 .idea/
 .cores/
+.ccache/
 cmake-build-*
 Testing/
 configs/static_config.yaml
