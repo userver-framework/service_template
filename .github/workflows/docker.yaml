@@ -26,7 +26,7 @@ jobs:
                     ccache-
 
           - name: Setup ccache
-            run: docker-compose run --rm service_template bash -c 'mkdir -p /service_template/ccache && chmod 777 -R /service_template/ccache && ccache -M 2.0GB && ccache -s'
+            run: docker-compose run --rm service_template bash -c 'ccache -M 2.0GB && ccache -s'
 
           - name: Cmake
             run: make docker-cmake-release

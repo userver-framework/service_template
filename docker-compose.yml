@@ -8,7 +8,7 @@ services:
         environment:
           - PREFIX=${PREFIX:-~/.local}
           - CC
-          - CCACHE_DIR=/service_template/ccache
+          - CCACHE_DIR=/home/user/.ccache
           - CCACHE_HASHDIR
           - CCACHE_NOHASHDIR
           - CCACHE_PREFIX
@@ -20,7 +20,7 @@ services:
         volumes:
           - .:/service_template:rw
           - ./third_party/userver/tools/docker:/tools:ro
-          - ${CCACHE_DIR:-~/.ccache}:/service_template/ccache:rw
+          - ${CCACHE_DIR:-~/.ccache}:/home/user/.ccache:rw
           - ${TC_CORES_DIR:-./.cores}:/cores:rw
         ports:
           - 8080:8080
