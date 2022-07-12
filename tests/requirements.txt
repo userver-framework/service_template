@@ -1,1 +1,1 @@
-yandex-taxi-testsuite
+yandex-taxi-testsuite>= 0.1.5.1
