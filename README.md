@@ -21,6 +21,8 @@ Makefile contains typicaly useful targets for development:
 * `make build-release` - release build of the service with LTO
 * `make test-debug` - does a `make build-debug` and runs all the tests on the result
 * `make test-release` - does a `make build-release` and runs all the tests on the result
+* `make service-start-debug` - builds the service in debug mode and starts it
+* `make service-start-release` - builds the service in release mode and starts it
 * `make` or `make all` - builds and runs all the tests in release and debug modes
 * `make format` - autoformat all the C++ and Python sources
 * `make clean-` - cleans the object files
