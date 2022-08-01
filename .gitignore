@@ -3,6 +3,7 @@ build*
 compile_commands.json
 .cache/
 .idea/
+.vscode/
 .cores/
 .ccache/
 cmake-build-*
