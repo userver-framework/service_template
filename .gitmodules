@@ -1,3 +1,3 @@
 [submodule "third_party/userver"]
 	path = third_party/userver
-	url = git@github.com:userver-framework/userver.git
+	url = https://github.com/userver-framework/userver.git
