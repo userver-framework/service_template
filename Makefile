@@ -36,8 +36,7 @@ test-impl-%: build-impl-%
 
 # testsuite service runner
 service-impl-start-%: build-impl-%
-	./build_$*/tests/runtests-service_template-testsuite \
-		--service-runner-mode -vvs ./tests
+	@cd ./build_$* && $(MAKE) start-service_template
 
 # clean
 clean-impl-%:

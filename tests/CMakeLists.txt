@@ -8,7 +8,7 @@ else()
 endif()
 
 userver_testsuite_add(
-  NAME service_template-testsuite
+  SERVICE_TARGET service_template
   REQUIREMENTS ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   PYTEST_ARGS
