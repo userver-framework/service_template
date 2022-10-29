@@ -44,6 +44,7 @@ jobs:
             run: |
                 sudo apt update
                 sudo apt install --allow-downgrades -y pep8 $(cat third_party/userver/scripts/docs/en/deps/${{matrix.os}}.md | tr '\n' ' ')
+                sudo apt install libgrpc-dev libgrpc++-dev libgrpc++1 protobuf-compiler-grpc
 
           - name: Setup ccache
             run: |
