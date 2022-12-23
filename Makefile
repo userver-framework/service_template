@@ -25,15 +25,16 @@ build_release/Makefile:
 	@cd build_release && \
       cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELEASE_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) ..
 
+# Run cmake
 .PHONY: cmake-debug cmake-release
 cmake-debug cmake-release: cmake-%: build_%/Makefile
 
-# build using cmake
+# Build using cmake
 .PHONY: build-debug build-release
 build-debug build-release: build-%: cmake-%
 	@cmake --build build_$* -j $(NPROCS) --target service_template
 
-# test
+# Test
 .PHONY: test-debug test-release
 test-debug test-release: test-%: build-%
 	@cmake --build build_$* -j $(NPROCS) --target service_template_unittest
@@ -41,16 +42,22 @@ test-debug test-release: test-%: build-%
 	@cd build_$* && ((test -t 1 && GTEST_COLOR=1 PYTEST_ADDOPTS="--color=yes" ctest -V) || ctest -V)
 	@pep8 tests
 
-# testsuite service runner
+# Start the service (via testsuite service runner)
 .PHONY: service-start-debug service-start-release
 service-start-debug service-start-release: service-start-%: build-%
 	@cd ./build_$* && $(MAKE) start-service_template
 
-# clean
+# Cleanup data
 .PHONY: clean-debug clean-release
 clean-debug clean-release: clean-%:
 	cd build_$* && $(MAKE) clean
 
+.PHONY: dist-clean
+dist-clean:
+	@rm -rf build_*
+	@rm -f ./configs/static_config.yaml
+
+# Install
 .PHONY: install-debug install-release
 install-debug install-release: install-%: build-%
 	@cd build_$* && \
@@ -59,18 +66,13 @@ install-debug install-release: install-%: build-%
 .PHONY: install
 install: install-release
 
-.PHONY: dist-clean
-dist-clean:
-	@rm -rf build_*
-	@rm -f ./configs/static_config.yaml
-
+# Format the sources
 .PHONY: format
 format:
 	@find src -name '*pp' -type f | xargs $(CLANG_FORMAT) -i
 	@find tests -name '*.py' -type f | xargs autopep8 -i
 
-
-# Hide target, use only in docker environment
+# Internal hidden targets that are used only in docker environment
 .PHONY: --in-docker-start-debug --in-docker-start-release
 --in-docker-start-debug --in-docker-start-release: --in-docker-start-%: install-%
 	@/home/user/.local/bin/service_template \
@@ -81,12 +83,12 @@ format:
 docker-start-service-debug docker-start-service-release: docker-start-service-%:
 	@docker-compose run -p 8080:8080 --rm service_template $(MAKE) -- --in-docker-start-$*
 
-# Start targets makefile in docker environment
+# Start specific target in docker environment
 .PHONY: docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release
 docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release: docker-%:
 	docker-compose run --rm service_template $(MAKE) $*
 
-# Stop docker container
+# Stop docker container and cleanup data
 .PHONY: docker-clean-data
 docker-clean-data:
 	@docker-compose down -v
