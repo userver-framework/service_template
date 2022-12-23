@@ -78,7 +78,7 @@ format:
 	@/home/user/.local/bin/service_template \
 		--config /home/user/.local/etc/service_template/static_config.yaml
 
-# Build and runs service in docker environment
+# Build and run service in docker environment
 .PHONY: docker-start-service-debug docker-start-service-release
 docker-start-service-debug docker-start-service-release: docker-start-service-%:
 	@docker-compose run -p 8080:8080 --rm service_template $(MAKE) -- --in-docker-start-$*
