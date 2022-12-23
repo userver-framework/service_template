@@ -1,7 +1,7 @@
 version: "2.3"
 
 services:
-    service_template:
+    service_template-container:
         image: ghcr.io/userver-framework/docker-userver-build-base:v1a
         privileged: true
         network_mode: bridge

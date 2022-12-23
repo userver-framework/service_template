@@ -32,8 +32,9 @@ Makefile contains typicaly useful targets for development:
 * `make docker-COMMAND` - run `make COMMAND` in docker environment
 * `make docker-build-debug` - debug build of the service with all the assertions and sanitizers enabled in docker environment
 * `make docker-test-debug` - does a `make build-debug` and runs all the tests on the result in docker environment
-* `make docker-start-service` - does a `make install-debug` and runs service in docker environment
+* `make docker-start-service-release` - does a `make install-release` and runs service in docker environment
 * `make docker-start-service-debug` - does a `make install-debug` and runs service in docker environment
+* `make docker-clean-data` - stop docker containers
 
 Edit `Makefile.local` to change the default configuration and build options.
 
