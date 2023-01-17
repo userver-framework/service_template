@@ -56,6 +56,8 @@ clean-debug clean-release: clean-%:
 dist-clean:
 	@rm -rf build_*
 	@rm -f ./configs/static_config.yaml
+	@rm -rf tests/__pycache__/
+	@rm -rf tests/.pytest_cache/
 
 # Install
 .PHONY: install-debug install-release
