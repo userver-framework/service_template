@@ -1,3 +1,1 @@
-yandex-taxi-testsuite>= 0.1.6.3
-grpcio
-grpcio-tools
+yandex-taxi-testsuite >= 0.1.7.2
