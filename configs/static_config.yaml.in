@@ -45,6 +45,9 @@ components_manager:
             load-enabled: $is_testing
             fs-task-processor: fs-task-processor
 
+        dns-client:
+            fs-task-processor: fs-task-processor
+
         tests-control:
             load-enabled: $is_testing
             path: /tests/{action}
