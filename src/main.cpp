@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
                             .Append<userver::server::handlers::Ping>()
                             .Append<userver::components::TestsuiteSupport>()
                             .Append<userver::components::HttpClient>()
-                            .Append<clients::dns::Component>()
+                            .Append<userver::clients::dns::Component>()
                             .Append<userver::server::handlers::TestsControl>();
 
   service_template::AppendHello(component_list);
