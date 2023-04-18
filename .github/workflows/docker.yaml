@@ -29,7 +29,7 @@ jobs:
             run: docker-compose run --rm service_template-container bash -c 'ccache -M 2.0GB && ccache -s'
 
           - name: Cmake
-            run: make docker-cmake-release
+            run: CMAKE_OPTIONS="-DUserverGrpc_VERSION=1.51.0" make docker-cmake-release
 
           - name: Build
             run: make docker-build-release
