@@ -4,7 +4,6 @@ CMAKE_RELEASE_FLAGS ?=
 CMAKE_OS_FLAGS ?= -DUSERVER_FEATURE_CRYPTOPP_BLAKE2=0 -DUSERVER_FEATURE_REDIS_HI_MALLOC=1
 NPROCS ?= $(shell nproc)
 CLANG_FORMAT ?= clang-format
-CMAKE_OPTIONS = ${CMAKE_OPTIONS}
 
 # NOTE: use Makefile.local for customization
 -include Makefile.local
