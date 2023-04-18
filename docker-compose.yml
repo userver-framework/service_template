@@ -2,7 +2,7 @@ version: "2.3"
 
 services:
     service_template-container:
-        image: ghcr.io/userver-framework/docker-userver-build-base:v1a
+        image: ghcr.io/userver-framework/ubuntu-userver-build-base:v1
         privileged: true
         network_mode: bridge
         environment:
@@ -17,6 +17,7 @@ services:
           - CORES_DIR=/cores
           - CXX
           - MAKE_OPTS
+          - CMAKE_OPTIONS
         volumes:
           - .:/service_template:rw
           - ./third_party/userver/tools/docker:/tools:ro

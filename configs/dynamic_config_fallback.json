@@ -23,6 +23,10 @@
     "cancel-request": false,
     "update-timeout": false
   },
+  "BAGGAGE_SETTINGS": {
+    "allowed_keys": []
+  },
+  "USERVER_BAGGAGE_ENABLED": false,
   "USERVER_TASK_PROCESSOR_QOS": {
     "default-service": {
       "default-task-processor": {
