@@ -16,14 +16,14 @@ build_debug/Makefile:
 	@git submodule update --init
 	@mkdir -p build_debug
 	@cd build_debug && \
-      cmake -DCMAKE_BUILD_TYPE=Debug $(CMAKE_COMMON_FLAGS) $(CMAKE_DEBUG_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) ..
+      cmake -DCMAKE_BUILD_TYPE=Debug $(CMAKE_COMMON_FLAGS) $(CMAKE_DEBUG_FLAGS) $(CMAKE_OS_FLAGS) ${CMAKE_OPTIONS} ..
 
 # Release cmake configuration
 build_release/Makefile:
 	@git submodule update --init
 	@mkdir -p build_release
 	@cd build_release && \
-      cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELEASE_FLAGS) $(CMAKE_OS_FLAGS) $(CMAKE_OPTIONS) ..
+      cmake -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELEASE_FLAGS) $(CMAKE_OS_FLAGS) ${CMAKE_OPTIONS} ..
 
 # Run cmake
 .PHONY: cmake-debug cmake-release
