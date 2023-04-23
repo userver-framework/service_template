@@ -1,0 +1,21 @@
+buildType:
+  default: debug
+  choices:
+    debug:
+      short: Debug
+      long: Emit debug information
+      buildType: Debug
+      settings: 
+        CMAKE_EXPORT_COMPILE_COMMANDS: ON
+        USERVER_SANITIZE: addr ub
+        USERVER_FEATURE_CRYPTOPP_BLAKE2: 0
+        USERVER_FEATURE_REDIS_HI_MALLOC: 1
+      
+    release:
+      short: Release
+      long: Optimize generated code
+      buildType: Release
+      settings: 
+        CMAKE_EXPORT_COMPILE_COMMANDS: ON
+        USERVER_FEATURE_CRYPTOPP_BLAKE2: 0
+        USERVER_FEATURE_REDIS_HI_MALLOC: 1
