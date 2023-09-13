@@ -2,6 +2,7 @@
   "USERVER_CACHES": {},
   "USERVER_CANCEL_HANDLE_REQUEST_BY_DEADLINE": false,
   "USERVER_CHECK_AUTH_IN_HANDLERS": false,
+  "USERVER_DEADLINE_PROPAGATION_ENABLED": true,
   "USERVER_DUMPS": {},
   "USERVER_HTTP_PROXY": "",
   "USERVER_HANDLER_STREAM_API_ENABLED": false,
@@ -18,10 +19,6 @@
     "https-per-second": 25,
     "per-host-limit": 3000,
     "per-host-per-second": 500
-  },
-  "HTTP_CLIENT_ENFORCE_TASK_DEADLINE": {
-    "cancel-request": false,
-    "update-timeout": false
   },
   "BAGGAGE_SETTINGS": {
     "allowed_keys": []
