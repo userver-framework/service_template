@@ -4,6 +4,7 @@ CMAKE_RELEASE_FLAGS ?=
 CMAKE_OS_FLAGS ?= -DUSERVER_FEATURE_CRYPTOPP_BLAKE2=0 -DUSERVER_FEATURE_REDIS_HI_MALLOC=1
 NPROCS ?= $(shell nproc)
 CLANG_FORMAT ?= clang-format
+DOCKER_COMPOSE ?= docker-compose
 
 # NOTE: use Makefile.local for customization
 -include Makefile.local
@@ -83,14 +84,14 @@ format:
 # Build and run service in docker environment
 .PHONY: docker-start-service-debug docker-start-service-release
 docker-start-service-debug docker-start-service-release: docker-start-service-%:
-	@docker-compose run -p 8080:8080 --rm service_template-container $(MAKE) -- --in-docker-start-$*
+	@$(DOCKER_COMPOSE) run -p 8080:8080 --rm service_template-container $(MAKE) -- --in-docker-start-$*
 
 # Start specific target in docker environment
 .PHONY: docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release
 docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release: docker-%:
-	docker-compose run --rm service_template-container $(MAKE) $*
+	$(DOCKER_COMPOSE) run --rm service_template-container $(MAKE) $*
 
 # Stop docker container and cleanup data
 .PHONY: docker-clean-data
 docker-clean-data:
-	@docker-compose down -v
+	@$(DOCKER_COMPOSE) down -v
