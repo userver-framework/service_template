@@ -3,5 +3,3 @@ worker-fs-threads: 2
 logger-level: debug
 
 is_testing: true
-
-server-port: 8080
