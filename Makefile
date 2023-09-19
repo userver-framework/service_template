@@ -56,7 +56,7 @@ clean-debug clean-release: clean-%:
 .PHONY: dist-clean
 dist-clean:
 	@rm -rf build_*
-	@rm -f ./configs/static_config.yaml
+	@rm -f ./configs/config_vars.yaml
 	@rm -rf tests/__pycache__/
 	@rm -rf tests/.pytest_cache/
 
@@ -80,6 +80,7 @@ format:
 --in-docker-start-debug --in-docker-start-release: --in-docker-start-%: install-%
 	@/home/user/.local/bin/service_template \
 		--config /home/user/.local/etc/service_template/static_config.yaml
+		--config_vars /home/user/.local/etc/service_template/config_vars.yaml
 
 # Build and run service in docker environment
 .PHONY: docker-start-service-debug docker-start-service-release
