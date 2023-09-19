@@ -61,12 +61,6 @@ userver_testsuite_add_simple(
 
 
 # Install
-if(DEFINED ENV{PREFIX})
-  message(STATUS "Set install prefix: $ENV{PREFIX}")
-  file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
-  set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
-endif()
-
 file(GLOB CONFIGS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.yaml ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.json)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${PROJECT_NAME})
