@@ -9,8 +9,8 @@ add_subdirectory(third_party/userver)
 
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
-		src/hello.hpp
-		src/hello.cpp
+    src/hello.hpp
+    src/hello.cpp
 )
 target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver-core)
 
@@ -22,7 +22,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs)
 
 # Unit Tests
 add_executable(${PROJECT_NAME}_unittest
-		src/hello_test.cpp
+    src/hello_test.cpp
 )
 target_link_libraries(${PROJECT_NAME}_unittest PRIVATE ${PROJECT_NAME}_objs userver-utest)
 add_google_tests(${PROJECT_NAME}_unittest)
@@ -30,7 +30,7 @@ add_google_tests(${PROJECT_NAME}_unittest)
 
 # Benchmarks
 add_executable(${PROJECT_NAME}_benchmark
-		src/hello_benchmark.cpp
+    src/hello_benchmark.cpp
 )
 target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME}_objs userver-ubench)
 add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
@@ -39,14 +39,14 @@ add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
 include(UserverTestsuite)
 
 userver_testsuite_add_simple(
-		REQUIREMENTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/requirements.txt"
-		CONFIG_VARS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars_testing.yaml"
+    REQUIREMENTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/requirements.txt"
+    CONFIG_VARS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars_testing.yaml"
 )
 
 if(DEFINED ENV{PREFIX})
-	message(STATUS "Set install prefix: $ENV{PREFIX}")
-	file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
-	set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
+  message(STATUS "Set install prefix: $ENV{PREFIX}")
+  file(TO_CMAKE_PATH "$ENV{PREFIX}" PREFIX_PATH)
+  set(CMAKE_INSTALL_PREFIX ${PREFIX_PATH})
 endif()
 
 set(CONFIG_VAR_PATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME}/config_vars.yaml)
