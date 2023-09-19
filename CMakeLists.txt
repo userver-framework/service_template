@@ -26,7 +26,7 @@ set(CONFIG_FALLBACK_PATH
     "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME}/dynamic_config_fallback.json")
 
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars_template.yaml"
+    "${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars.template.yaml"
     "${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars.yaml"
 )
 
@@ -57,7 +57,6 @@ include(UserverTestsuite)
 
 userver_testsuite_add_simple(
     REQUIREMENTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/requirements.txt"
-    CONFIG_VARS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars_testing.yaml"
 )
 
 
