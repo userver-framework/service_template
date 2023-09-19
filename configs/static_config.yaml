@@ -1,7 +1,5 @@
 # yaml
 
-config_vars: @CONFIG_VAR_PATH@
-
 components_manager:
     coro_pool:
         initial_size: 500             # Preallocate 500 coroutines at startup.
@@ -9,7 +7,7 @@ components_manager:
 
     task_processors:                  # Task processor is an executor for coroutine tasks
 
-        main-task-processor:          # Make a task processor for CPU-bound couroutine tasks.
+        main-task-processor:          # Make a task processor for CPU-bound coroutine tasks.
             worker_threads: $worker-threads         # Process tasks in 4 threads.
             thread_name: main-worker  # OS will show the threads of this task processor with 'main-worker' prefix.
 
@@ -38,7 +36,7 @@ components_manager:
         dynamic-config:                      # Dynamic config storage options, do nothing
             fs-cache-path: ''
         dynamic-config-fallbacks:            # Load options from file and push them into the dynamic config storage.
-            fallback-path: @CONFIG_FALLBACK_PATH@
+            fallback-path: $config-fallback-path
         testsuite-support: {}
 
         http-client:

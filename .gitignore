@@ -8,5 +8,5 @@ compile_commands.json
 .ccache/
 cmake-build-*
 Testing/
-configs/static_config.yaml
+configs/config_vars.yaml
 .DS_Store
