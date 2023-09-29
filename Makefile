@@ -79,7 +79,7 @@ format:
 .PHONY: --in-docker-start-debug --in-docker-start-release
 --in-docker-start-debug --in-docker-start-release: --in-docker-start-%: install-%
 	@/home/user/.local/bin/service_template \
-		--config /home/user/.local/etc/service_template/static_config.yaml
+		--config /home/user/.local/etc/service_template/static_config.yaml \
 		--config_vars /home/user/.local/etc/service_template/config_vars.yaml
 
 # Build and run service in docker environment
