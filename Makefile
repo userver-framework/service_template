@@ -85,12 +85,12 @@ format:
 # Build and run service in docker environment
 .PHONY: docker-start-service-debug docker-start-service-release
 docker-start-service-debug docker-start-service-release: docker-start-service-%:
-	@$(DOCKER_COMPOSE) run -p 8080:8080 --rm service_template-container $(MAKE) -- --in-docker-start-$*
+	@$(DOCKER_COMPOSE) run -p 8080:8080 --rm service_template-container make -- --in-docker-start-$*
 
 # Start specific target in docker environment
 .PHONY: docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release
 docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release: docker-%:
-	$(DOCKER_COMPOSE) run --rm service_template-container $(MAKE) $*
+	$(DOCKER_COMPOSE) run --rm service_template-container make $*
 
 # Stop docker container and cleanup data
 .PHONY: docker-clean-data
