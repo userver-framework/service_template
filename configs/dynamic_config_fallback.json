@@ -1,16 +1,4 @@
 {
-  "USERVER_CACHES": {},
-  "USERVER_CANCEL_HANDLE_REQUEST_BY_DEADLINE": false,
-  "USERVER_CHECK_AUTH_IN_HANDLERS": false,
-  "USERVER_DEADLINE_PROPAGATION_ENABLED": true,
-  "USERVER_DUMPS": {},
-  "USERVER_HTTP_PROXY": "",
-  "USERVER_HANDLER_STREAM_API_ENABLED": false,
-  "USERVER_LOG_REQUEST": true,
-  "USERVER_LOG_REQUEST_HEADERS": false,
-  "USERVER_LRU_CACHES": {},
-  "USERVER_RPS_CCONTROL_CUSTOM_STATUS": {},
-  "USERVER_TASK_PROCESSOR_PROFILER_DEBUG": {},
   "HTTP_CLIENT_CONNECTION_POOL_SIZE": 1000,
   "HTTP_CLIENT_CONNECT_THROTTLE": {
     "http-limit": 6000,
@@ -20,10 +8,6 @@
     "per-host-limit": 3000,
     "per-host-per-second": 500
   },
-  "BAGGAGE_SETTINGS": {
-    "allowed_keys": []
-  },
-  "USERVER_BAGGAGE_ENABLED": false,
   "USERVER_TASK_PROCESSOR_QOS": {
     "default-service": {
       "default-task-processor": {

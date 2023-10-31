@@ -1,5 +1,3 @@
-# yaml
-
 components_manager:
     coro_pool:
         initial_size: 500             # Preallocate 500 coroutines at startup.
@@ -33,10 +31,14 @@ components_manager:
         tracer:                              # Component that helps to trace execution times and requests in logs.
             service-name: service_template   # "You know. You all know exactly who I am. Say my name. " (c)
 
-        dynamic-config:                      # Dynamic config storage options, do nothing
-            fs-cache-path: ''
-        dynamic-config-fallbacks:            # Load options from file and push them into the dynamic config storage.
-            fallback-path: $config-fallback-path
+        # Dynamic config options. Cache is disabled, updates are disabled.
+        dynamic-config:
+            # Load config from dynamic_config_fallback.json file.
+            # For most of userver dynamic configs, defaults are used, some are overridden in the file.
+            # See userver "dynamic config" docs for what configs exist.
+            defaults-path: $config-fallback-path
+            fs-task-processor: fs-task-processor
+
         testsuite-support: {}
 
         http-client:
