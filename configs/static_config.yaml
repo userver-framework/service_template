@@ -33,11 +33,10 @@ components_manager:
 
         # Dynamic config options. Cache is disabled, updates are disabled.
         dynamic-config:
-            # Load config from dynamic_config_fallback.json file.
-            # For most of userver dynamic configs, defaults are used, some are overridden in the file.
+            # For most of userver dynamic configs, defaults are used, some are overridden here.
             # See userver "dynamic config" docs for what configs exist.
-            defaults-path: $config-fallback-path
-            fs-task-processor: fs-task-processor
+            defaults:
+                HTTP_CLIENT_CONNECTION_POOL_SIZE: 1000
 
         testsuite-support: {}
 

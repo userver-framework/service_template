@@ -51,14 +51,6 @@ if(DEFINED ENV{PREFIX})
   set(CMAKE_INSTALL_PREFIX "${PREFIX_PATH}")
 endif()
 
-set(CONFIG_FALLBACK_PATH
-    "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_SYSCONFDIR}/${PROJECT_NAME}/dynamic_config_fallback.json")
-
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars.template.yaml"
-    "${CMAKE_CURRENT_SOURCE_DIR}/configs/config_vars.yaml"
-)
-
 file(GLOB CONFIGS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.yaml ${CMAKE_CURRENT_SOURCE_DIR}/configs/*.json)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT ${PROJECT_NAME})
