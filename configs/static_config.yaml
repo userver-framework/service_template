@@ -1,18 +1,10 @@
-# yaml
-
 components_manager:
-    coro_pool:
-        initial_size: 500             # Preallocate 500 coroutines at startup.
-        max_size: 1000                # Do not keep more than 1000 preallocated coroutines.
-
     task_processors:                  # Task processor is an executor for coroutine tasks
 
         main-task-processor:          # Make a task processor for CPU-bound coroutine tasks.
             worker_threads: $worker-threads         # Process tasks in 4 threads.
-            thread_name: main-worker  # OS will show the threads of this task processor with 'main-worker' prefix.
 
         fs-task-processor:            # Make a separate task processor for filesystem bound tasks.
-            thread_name: fs-worker
             worker_threads: $worker-fs-threads
 
     default_task_processor: main-task-processor
@@ -30,13 +22,13 @@ components_manager:
                     level: $logger-level
                     overflow_behavior: discard  # Drop logs if the system is too busy to write them down.
 
-        tracer:                              # Component that helps to trace execution times and requests in logs.
-            service-name: service_template   # "You know. You all know exactly who I am. Say my name. " (c)
+        # Dynamic config options. Cache is disabled, updates are disabled.
+        dynamic-config:
+            # For most of userver dynamic configs, defaults are used, some are overridden here.
+            # See userver "dynamic config" docs for what configs exist.
+            defaults:
+                HTTP_CLIENT_CONNECTION_POOL_SIZE: 1000
 
-        dynamic-config:                      # Dynamic config storage options, do nothing
-            fs-cache-path: ''
-        dynamic-config-fallbacks:            # Load options from file and push them into the dynamic config storage.
-            fallback-path: $config-fallback-path
         testsuite-support: {}
 
         http-client:

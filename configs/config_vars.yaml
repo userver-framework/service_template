@@ -5,5 +5,3 @@ logger-level: debug
 is_testing: false
 
 server-port: 8080
-
-config-fallback-path: @CONFIG_FALLBACK_PATH@
