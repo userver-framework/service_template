@@ -15,19 +15,16 @@ CMAKE_RELEASE_FLAGS += -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS)
 .PHONY: all
 all: test-debug test-release
 
-# Debug cmake configuration
-build_debug/Makefile:
+# Run cmake
+.PHONY: cmake-debug
+cmake-debug:
+	@git submodule update --init
+	@cmake -B build_debug $(CMAKE_DEBUG_FLAGS)
+
+.PHONY: cmake-release
+cmake-release:
 	@git submodule update --init
 	@cmake -B build_debug $(CMAKE_RELEASE_FLAGS)
-
-# Release cmake configuration
-build_release/Makefile:
-	@git submodule update --init
-	@cmake -B build_release $(CMAKE_DEBUG_FLAGS)
-
-# Run cmake
-.PHONY: cmake-debug cmake-release
-cmake-debug cmake-release: cmake-%: build_%/Makefile
 
 # Build using cmake
 .PHONY: build-debug build-release
