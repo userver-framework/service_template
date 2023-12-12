@@ -1,7 +1,6 @@
 CMAKE_COMMON_FLAGS ?= -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 CMAKE_DEBUG_FLAGS ?= -DUSERVER_SANITIZE='addr ub'
 CMAKE_RELEASE_FLAGS ?=
-CMAKE_OS_FLAGS ?= -DUSERVER_FEATURE_CRYPTOPP_BLAKE2=0 -DUSERVER_FEATURE_REDIS_HI_MALLOC=1
 NPROCS ?= $(shell nproc)
 CLANG_FORMAT ?= clang-format
 DOCKER_COMPOSE ?= docker-compose
@@ -45,13 +44,13 @@ test-debug test-release: test-%: build-%
 
 # Start the service (via testsuite service runner)
 .PHONY: service-start-debug service-start-release
-service-start-debug service-start-release: service-start-%: build-%
-	@cd ./build_$* && $(MAKE) start-service_template
+service-start-debug service-start-release: service-start-%:
+	@cmake --build build_$* -v --target=start-service_template
 
 # Cleanup data
 .PHONY: clean-debug clean-release
 clean-debug clean-release: clean-%:
-	cd build_$* && $(MAKE) clean
+	@cmake --build build_$* --target clean
 
 .PHONY: dist-clean
 dist-clean:
@@ -62,8 +61,7 @@ dist-clean:
 # Install
 .PHONY: install-debug install-release
 install-debug install-release: install-%: build-%
-	@cd build_$* && \
-		cmake --install . -v --component service_template
+	@cmake --install build_$* -v --component service_template
 
 .PHONY: install
 install: install-release
@@ -89,7 +87,7 @@ docker-start-service-debug docker-start-service-release: docker-start-service-%:
 # Start specific target in docker environment
 .PHONY: docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release
 docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release: docker-%:
-	$(DOCKER_COMPOSE) run --rm service_template-container make $*
+	@$(DOCKER_COMPOSE) run --rm service_template-container make $*
 
 # Stop docker container and cleanup data
 .PHONY: docker-clean-data
