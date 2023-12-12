@@ -9,7 +9,7 @@ name: Docker build
           - feature/**
 
 env:
-    CMAKE_OPTIONS: -DUserverGrpc_VERSION=1.51.0
+    CMAKE_COMMON_FLAGS: -DUserverGrpc_VERSION=1.51.0
 
 jobs:
     tests:

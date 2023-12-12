@@ -9,14 +9,15 @@ set(USERVER_FEATURE_CLICKHOUSE OFF CACHE BOOL "" FORCE)
 set(USERVER_FEATURE_GRPC OFF CACHE BOOL "" FORCE)
 set(USERVER_FEATURE_RABBITMQ OFF CACHE BOOL "" FORCE)
 
-# Compatibility mode: some systems don't support these features.
+# Compatibility mode: some systems don't support these features
 set(USERVER_FEATURE_CRYPTOPP_BLAKE2 OFF CACHE BOOL "" FORCE)
 set(USERVER_FEATURE_GRPC_CHANNELZ OFF CACHE BOOL "" FORCE)
 set(USERVER_FEATURE_REDIS_HI_MALLOC ON CACHE BOOL "" FORCE)
 
+
+# Adding userver dependency
 include(third_party/userver/cmake/SetupEnvironment.cmake)
 include(GNUInstallDirs)
-
 add_subdirectory(third_party/userver)
 
 

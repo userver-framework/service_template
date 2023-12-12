@@ -1,5 +1,4 @@
-CMAKE_OPTIONS ?=
-CMAKE_COMMON_FLAGS ?= -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+CMAKE_COMMON_FLAGS ?=
 CMAKE_DEBUG_FLAGS ?= -DUSERVER_SANITIZE='addr;ub'
 CMAKE_RELEASE_FLAGS ?=
 NPROCS ?= $(shell nproc)
@@ -9,9 +8,9 @@ DOCKER_COMPOSE ?= docker-compose
 # NOTE: use Makefile.local to override the options defined above.
 -include Makefile.local
 
-CMAKE_COMMON_FLAGS += $(CMAKE_OPTIONS)
-CMAKE_DEBUG_FLAGS += -DCMAKE_BUILD_TYPE=Debug
-CMAKE_RELEASE_FLAGS += -DCMAKE_BUILD_TYPE=Release
+CMAKE_COMMON_FLAGS += -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+CMAKE_DEBUG_FLAGS += -DCMAKE_BUILD_TYPE=Debug $(CMAKE_COMMON_FLAGS)
+CMAKE_RELEASE_FLAGS += -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS)
 
 .PHONY: all
 all: test-debug test-release
@@ -19,12 +18,12 @@ all: test-debug test-release
 # Debug cmake configuration
 build_debug/Makefile:
 	@git submodule update --init
-	@cmake -B build_debug $(CMAKE_COMMON_FLAGS) $(CMAKE_DEBUG_FLAGS)
+	@cmake -B build_debug $(CMAKE_RELEASE_FLAGS)
 
 # Release cmake configuration
 build_release/Makefile:
 	@git submodule update --init
-	@cmake -B build_release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELEASE_FLAGS)
+	@cmake -B build_release $(CMAKE_DEBUG_FLAGS)
 
 # Run cmake
 .PHONY: cmake-debug cmake-release
