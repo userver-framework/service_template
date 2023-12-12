@@ -24,7 +24,7 @@ cmake-debug:
 .PHONY: cmake-release
 cmake-release:
 	@git submodule update --init
-	@cmake -B build_debug $(CMAKE_RELEASE_FLAGS)
+	@cmake -B build_release $(CMAKE_RELEASE_FLAGS)
 
 # Build using cmake
 .PHONY: build-debug build-release
