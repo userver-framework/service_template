@@ -26,9 +26,12 @@ cmake-release:
 	git submodule update --init
 	cmake -B build_release $(CMAKE_RELEASE_FLAGS)
 
+build_debug/CMakeCache.txt: cmake-debug
+build_release/CMakeCache.txt: cmake-release
+
 # Build using cmake
 .PHONY: build-debug build-release
-build-debug build-release: build-%: cmake-%
+build-debug build-release: build-%: build_%/CMakeCache.txt
 	cmake --build build_$* -j $(NPROCS) --target service_template
 
 # Test
