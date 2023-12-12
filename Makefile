@@ -19,14 +19,12 @@ all: test-debug test-release
 # Debug cmake configuration
 build_debug/Makefile:
 	@git submodule update --init
-	@mkdir -p build_debug
-	@cmake -B build_debug $(CMAKE_COMMON_FLAGS) $(CMAKE_DEBUG_FLAGS) $(CMAKE_OPTIONS)
+	@cmake -B build_debug $(CMAKE_COMMON_FLAGS) $(CMAKE_DEBUG_FLAGS)
 
 # Release cmake configuration
 build_release/Makefile:
 	@git submodule update --init
-	@mkdir -p build_release
-	@cmake -B build_release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELEASE_FLAGS) $(CMAKE_OPTIONS)
+	@cmake -B build_release $(CMAKE_COMMON_FLAGS) $(CMAKE_RELEASE_FLAGS)
 
 # Run cmake
 .PHONY: cmake-debug cmake-release
