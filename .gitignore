@@ -9,3 +9,4 @@ compile_commands.json
 cmake-build-*
 Testing/
 .DS_Store
+Makefile.local

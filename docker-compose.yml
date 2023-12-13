@@ -17,7 +17,7 @@ services:
           - CORES_DIR=/cores
           - CXX
           - MAKE_OPTS
-          - CMAKE_OPTIONS
+          - CMAKE_COMMON_FLAGS
         volumes:
           - .:/service_template:rw
           - ./third_party/userver/tools/docker:/tools:ro
