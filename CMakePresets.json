@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "debug",
+      "displayName": "Default Debug",
+      "description": "Fully featured Debug build, some platforms miss the required dependencies",
+      "inherits": [
+        "common-flags"
+      ],
+      "binaryDir": "${sourceDir}/build_debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "USERVER_SANITIZE": "addr;ub"
+      }
+    },
+    {
+      "name": "compat-debug",
+      "displayName": "Compatibility-mode Debug",
+      "description": "Debug build with some features (e.g. sanitizers) disabled for compatibility",
+      "inherits": [
+        "compat-flags",
+        "common-flags"
+      ],
+      "binaryDir": "${sourceDir}/build_debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Default Release",
+      "description": "Fully featured Release build, some platforms miss the required dependencies",
+      "inherits": [
+        "common-flags"
+      ],
+      "binaryDir": "${sourceDir}/build_release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "compat-release",
+      "displayName": "Compatibility-mode Release",
+      "description": "Release build with some features disabled for compatibility",
+      "inherits": [
+        "common-flags",
+        "compat-flags"
+      ],
+      "binaryDir": "${sourceDir}/build_release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "common-flags",
+      "hidden": true,
+      "generator": "Ninja",
+      "cacheVariables": {
+        "SERVICE_TEMPLATE_OVERRIDES": "OFF",
+        "USERVER_FEATURE_MONGODB": "OFF",
+        "USERVER_FEATURE_POSTGRESQL": "OFF",
+        "USERVER_FEATURE_REDIS": "OFF",
+        "USERVER_FEATURE_CLICKHOUSE": "OFF",
+        "USERVER_FEATURE_GRPC": "OFF",
+        "USERVER_FEATURE_RABBITMQ": "OFF",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "compat-flags",
+      "hidden": true,
+      "generator": "Unix Makefiles",
+      "cacheVariables": {
+        "USERVER_FEATURE_CRYPTOPP_BLAKE2": "OFF",
+        "USERVER_FEATURE_GRPC_CHANNELZ": "OFF",
+        "USERVER_FEATURE_REDIS_HI_MALLOC": "ON"
+      }
+    }
+  ]
+}

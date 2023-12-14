@@ -44,7 +44,7 @@ test-debug test-release: test-%: build-%
 # Start the service (via testsuite service runner)
 .PHONY: service-start-debug service-start-release
 service-start-debug service-start-release: service-start-%:
-	cmake --build build_$* -v --target=start-service_template
+	cmake --build build_$* -v --target start-service_template
 
 # Cleanup data
 .PHONY: clean-debug clean-release
