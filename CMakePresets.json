@@ -62,6 +62,7 @@
       "hidden": true,
       "generator": "Ninja",
       "cacheVariables": {
+        "SERVICE_TEMPLATE_OVERRIDES": "OFF",
         "USERVER_FEATURE_MONGODB": "OFF",
         "USERVER_FEATURE_POSTGRESQL": "OFF",
         "USERVER_FEATURE_REDIS": "OFF",
