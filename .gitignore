@@ -2,10 +2,13 @@ __pycache__
 build*
 compile_commands.json
 .cache/
+.ccache/
 .idea/
 .vscode/
+!.vscode/c_cpp_properties.json
+!.vscode/cmake-variants.yaml
+!.vscode/README.md
 .cores/
-.ccache/
 cmake-build-*
 Testing/
 .DS_Store
