@@ -17,12 +17,10 @@ all: test-debug test-release
 # Run cmake
 .PHONY: cmake-debug
 cmake-debug:
-	git submodule update --init
 	cmake -B build_debug $(CMAKE_DEBUG_FLAGS)
 
 .PHONY: cmake-release
 cmake-release:
-	git submodule update --init
 	cmake -B build_release $(CMAKE_RELEASE_FLAGS)
 
 build_debug/CMakeCache.txt: cmake-debug
@@ -39,7 +37,7 @@ test-debug test-release: test-%: build-%
 	cmake --build build_$* -j $(NPROCS) --target service_template_unittest
 	cmake --build build_$* -j $(NPROCS) --target service_template_benchmark
 	cd build_$* && ((test -t 1 && GTEST_COLOR=1 PYTEST_ADDOPTS="--color=yes" ctest -V) || ctest -V)
-	pep8 tests
+	pycodestyle tests
 
 # Start the service (via testsuite service runner)
 .PHONY: service-start-debug service-start-release

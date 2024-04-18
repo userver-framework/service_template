@@ -2,7 +2,7 @@ version: "2.3"
 
 services:
     service_template-container:
-        image: ghcr.io/userver-framework/ubuntu-22.04-userver-base-ci:latest
+        image: ghcr.io/userver-framework/ubuntu-22.04-userver-pg:latest
         privileged: true
         network_mode: bridge
         environment:
@@ -11,9 +11,8 @@ services:
           - CORES_DIR=/cores
         volumes:
           - .:/service_template:rw
-          - ./third_party/userver/scripts/docker/:/tools:ro
         ports:
           - 8080:8080
         working_dir: /service_template
         entrypoint:
-          - /tools/run_as_user.sh
+          - ./tests/run_as_user.sh
