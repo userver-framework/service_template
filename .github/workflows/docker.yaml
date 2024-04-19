@@ -1,15 +1,14 @@
 name: Docker build
 
 'on':
+    schedule:
+      - cron: '30 5 * * 1'  # Every Monday at 5:30
     pull_request:
     push:
         branches:
           - master
           - develop
           - feature/**
-
-env:
-    CMAKE_COMMON_FLAGS: -DUserverGrpc_VERSION=1.51.0
 
 jobs:
     tests:
