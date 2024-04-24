@@ -9,11 +9,9 @@ if(NOT userver_FOUND)  # Fallback to CPM
 
   CPMAddPackage(
       NAME userver
-      # Optionally: update the minimum userver version here
-      VERSION 2.0
+      GITHUB_REPOSITORY userver-framework/userver
       # Optionally: pin userver version for reproducible builds
       GIT_TAG develop
-      GITHUB_REPOSITORY userver-framework/userver
       OPTIONS
       # Compatibility mode: some systems don't support these features
       "USERVER_FEATURE_CRYPTOPP_BLAKE2 OFF"
