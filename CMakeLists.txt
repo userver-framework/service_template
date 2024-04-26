@@ -12,6 +12,8 @@ if(NOT userver_FOUND)  # Fallback to CPM
       GITHUB_REPOSITORY userver-framework/userver
       # Optionally: pin userver version for reproducible builds
       GIT_TAG develop
+      # Optionally: use a custom local version of userver
+      # SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..."
       OPTIONS
       # Compatibility mode: some systems don't support these features
       "USERVER_FEATURE_CRYPTOPP_BLAKE2 OFF"
@@ -53,8 +55,6 @@ add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
 
 
 # Functional Tests
-include(UserverTestsuite)
-
 userver_testsuite_add_simple()
 
 
