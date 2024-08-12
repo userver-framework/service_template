@@ -27,6 +27,11 @@ jobs:
                     ccache-dir-${{github.ref}}_run-
                     ccache-
 
+          - name: Install docker-compose
+            run: |
+                sudo apt update
+                sudo apt install --allow-downgrades -y docker-compose
+
           - name: Setup ccache
             run: docker-compose run --rm service_template-container bash -c 'ccache -M 2.0GB && ccache -s'
 
