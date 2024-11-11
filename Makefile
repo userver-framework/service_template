@@ -40,9 +40,12 @@ test-debug test-release: test-%: build-%
 	pycodestyle tests
 
 # Start the service (via testsuite service runner)
-.PHONY: service-start-debug service-start-release
-service-start-debug service-start-release: service-start-%:
+.PHONY: start-debug start-release
+start-debug start-release: start-%:
 	cmake --build build_$* -v --target=start-service_template
+
+.PHONY: service-start-debug service-start-release
+service-start-debug service-start-release: service-start-%: start-%
 
 # Cleanup data
 .PHONY: clean-debug clean-release
@@ -77,9 +80,12 @@ format:
 		--config_vars /home/user/.local/etc/service_template/config_vars.yaml
 
 # Build and run service in docker environment
-.PHONY: docker-start-service-debug docker-start-service-release
-docker-start-service-debug docker-start-service-release: docker-start-service-%:
+.PHONY: docker-start-debug docker-start-release
+docker-start-debug docker-start-release: docker-start-%:
 	$(DOCKER_COMPOSE) run -p 8080:8080 --rm service_template-container make -- --in-docker-start-$*
+
+.PHONY: docker-start-service-debug docker-start-service-release
+docker-start-service-debug docker-start-service-release: docker-start-service-%: docker-start-%
 
 # Start specific target in docker environment
 .PHONY: docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release
