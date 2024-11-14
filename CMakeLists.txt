@@ -3,7 +3,8 @@ project(mongo_grpc_service_template CXX)
 
 
 # Adding userver dependency
-find_package(userver COMPONENTS core postgresql QUIET)
+find_package(userver COMPONENTS core QUIET)
+find_package(userver COMPONENTS mongo REQUIRED)
 if(NOT userver_FOUND)  # Fallback to subdirectory usage
     # Compatibility mode: some systems don't support these features
     set(USERVER_FEATURE_CRYPTOPP_BLAKE2 OFF CACHE BOOL "" FORCE)
@@ -31,7 +32,7 @@ target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::core)
 
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs userver::mongo)
 
 
 # Unit Tests

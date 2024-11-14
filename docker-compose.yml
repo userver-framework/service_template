@@ -1,10 +1,21 @@
 version: "2.3"
 
 services:
+    mongo:
+        container_name: service-mongo
+        image: mongo
+        environment: &db_env
+          POSTGRES_DB: pg_grpc_service_template_db_1
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+        ports:
+          - 27017
+        networks:
+          - mongo
+
     mongo_grpc_service_template-container:
         image: ghcr.io/userver-framework/ubuntu-22.04-userver-pg:latest
         privileged: true
-        network_mode: bridge
         environment:
           - PREFIX=${PREFIX:-~/.local}
           - CCACHE_DIR=/mongo_grpc_service_template/.ccache
@@ -16,3 +27,22 @@ services:
         working_dir: /mongo_grpc_service_template
         entrypoint:
           - ./tests/run_as_user.sh
+        depends_on:
+          - mongo
+        networks:
+          - mongo
+          - dockerbridge
+
+networks:
+    mongo:
+        driver: bridge
+    dockerbridge:
+        enable_ipv6: true
+        driver: bridge
+        driver_opts:
+            com.docker.network.enable_ipv6: "true"
+        ipam:
+            driver: default
+            config:
+             - subnet: 2001:3984:3989::/64
+               gateway: 2001:3984:3989::1

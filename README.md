@@ -1,6 +1,6 @@
 # mongo_grpc_service_template
 
-Template of a C++ service that uses [userver framework](https://github.com/userver-framework/userver).
+Template of a C++ service that uses [userver framework](https://github.com/userver-framework/userver) with MongoDB and gRPC.
 
 
 ## Download and Build

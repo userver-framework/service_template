@@ -5,3 +5,5 @@ logger-level: info
 is_testing: false
 
 server-port: 8080
+
+dbconnection: 'mongodb://localhost:27017/admin'

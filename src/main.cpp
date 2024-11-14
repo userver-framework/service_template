@@ -3,6 +3,7 @@
 #include <userver/clients/http/component.hpp>
 #include <userver/server/handlers/ping.hpp>
 #include <userver/server/handlers/tests_control.hpp>
+#include <userver/storages/mongo/component.hpp>
 #include <userver/testsuite/testsuite_support.hpp>
 #include <userver/utils/daemon_run.hpp>
 
@@ -14,7 +15,8 @@ int main(int argc, char* argv[]) {
                             .Append<userver::components::TestsuiteSupport>()
                             .Append<userver::components::HttpClient>()
                             .Append<userver::clients::dns::Component>()
-                            .Append<userver::server::handlers::TestsControl>();
+                            .Append<userver::server::handlers::TestsControl>()
+                            .Append<userver::components::Mongo>("mongo-db-1");
 
   mongo_grpc_service_template::AppendHello(component_list);
 
