@@ -3,9 +3,11 @@ project(mongo_grpc_service_template CXX)
 
 
 # Adding userver dependency
-find_package(userver COMPONENTS core QUIET)
-find_package(userver COMPONENTS mongo REQUIRED)
+find_package(userver COMPONENTS core mongo QUIET)
 if(NOT userver_FOUND)  # Fallback to subdirectory usage
+    # Enable userver libraries that are needed in this project
+    set(USERVER_FEATURE_MONGODB ON CACHE BOOL "" FORCE)
+
     # Compatibility mode: some systems don't support these features
     set(USERVER_FEATURE_CRYPTOPP_BLAKE2 OFF CACHE BOOL "" FORCE)
     set(USERVER_FEATURE_GRPC_CHANNELZ OFF CACHE BOOL "" FORCE)
@@ -27,12 +29,12 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/hello.hpp
     src/hello.cpp
 )
-target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::core)
+target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::mongo)
 
 
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs userver::mongo)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs)
 
 
 # Unit Tests
