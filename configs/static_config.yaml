@@ -7,9 +7,48 @@ components_manager:
         fs-task-processor:            # Make a separate task processor for filesystem bound tasks.
             worker_threads: $worker-fs-threads
 
+        grpc-blocking-task-processor:
+            worker_threads: $worker-grpc-threads
+            thread_name: grpc-worker
+
     default_task_processor: main-task-processor
 
     components:                       # Configuring components that were registered via component_list
+        # Settings common to all gRPC client factories
+        grpc-client-common:
+            # The TaskProcessor for blocking connection initiation
+            blocking-task-processor: grpc-blocking-task-processor
+
+        grpc-client-factory:
+            # Optional channel parameters for gRPC Core
+            # https://grpc.github.io/grpc/core/group__grpc__arg__keys.html
+            channel-args: {}
+            middlewares:
+              - grpc-client-logging
+              - grpc-client-deadline-propagation
+
+        grpc-client-logging:
+        grpc-client-deadline-propagation:
+
+        handler-hello:
+
+        hello-client:
+            endpoint: $hello-endpoint
+
+        grpc-server:
+            port: 8081
+            service-defaults:
+                middlewares:
+                  - grpc-server-logging
+                  - grpc-server-deadline-propagation
+                  - grpc-server-congestion-control
+                task-processor: main-task-processor
+
+        congestion-control:
+        grpc-server-logging:
+        grpc-server-deadline-propagation:
+        grpc-server-congestion-control:
+
         server:
             listener:                 # configuring the main listening socket...
                 port: $server-port            # ...to listen on this port and...
@@ -28,21 +67,22 @@ components_manager:
             # See userver "dynamic config" docs for what configs exist.
             defaults:
                 HTTP_CLIENT_CONNECTION_POOL_SIZE: 1000
+                POSTGRES_DEFAULT_COMMAND_CONTROL:
+                    network_timeout_ms: 750
+                    statement_timeout_ms: 500
 
         testsuite-support: {}
 
         http-client:
-            load-enabled: $is_testing
-            fs-task-processor: fs-task-processor
-
-        dns-client:
+            load-enabled: $is-testing
             fs-task-processor: fs-task-processor
 
         tests-control:
-            load-enabled: $is_testing
+            load-enabled: $is-testing
             path: /tests/{action}
             method: POST
             task_processor: main-task-processor
+
         handler-ping:
             path: /ping
             method: GET
@@ -53,7 +93,3 @@ components_manager:
         mongo-db-1:
             dbconnection: $dbconnection
 
-        handler-hello:                    # Finally! Our handler.
-            path: /hello                  # Registering handler by URL '/hello'.
-            method: GET,POST              # It will only reply to GET (HEAD) and POST requests.
-            task_processor: main-task-processor  # Run it on CPU bound task processor

@@ -79,7 +79,7 @@ format:
 # Build and run service in docker environment
 .PHONY: docker-start-debug docker-start-release
 docker-start-debug docker-start-release: docker-start-%:
-	$(DOCKER_COMPOSE) run -p 8080:8080 --rm mongo_grpc_service_template-container make -- --in-docker-start-$*
+	$(DOCKER_COMPOSE) run -p 8080:8080 -p 8081:8081 --rm mongo_grpc_service_template-container make -- --in-docker-start-$*
 
 # Start specific target in docker environment
 .PHONY: docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release

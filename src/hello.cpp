@@ -2,36 +2,43 @@
 
 #include <fmt/format.h>
 
-#include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/storages/mongo/pool.hpp>
+#include <userver/utils/assert.hpp>
 
 namespace mongo_grpc_service_template {
 
-namespace {
+Hello::SayHelloResult Hello::SayHello(CallContext& /*context*/,
+                                      handlers::api::HelloRequest&& request) {
+  auto name = request.name();
 
-class Hello final : public userver::server::handlers::HttpHandlerBase {
-public:
-  static constexpr std::string_view kName = "handler-hello";
-
-  using HttpHandlerBase::HttpHandlerBase;
-
-  std::string HandleRequestThrow(
-      const userver::server::http::HttpRequest &request,
-      userver::server::request::RequestContext &) const override {
-    return mongo_grpc_service_template::SayHelloTo(request.GetArg("name"));
+  auto user_type = UserType::kFirstTime;
+  if (!name.empty()) {
+    // TODO Mongo
   }
-};
+  if (name.substr(0, 5) == "mock_") {
+    name = client_.SayHello(name.substr(5));
+  }
+  handlers::api::HelloResponse response;
+  response.set_text(SayHelloTo(name, user_type));
+  return response;
+}
 
-} // namespace
-
-std::string SayHelloTo(std::string_view name) {
+std::string SayHelloTo(std::string_view name, UserType type) {
   if (name.empty()) {
     name = "unknown user";
   }
 
-  return fmt::format("Hello, {}!\n", name);
+  switch (type) {
+    case UserType::kFirstTime:
+      return fmt::format("Hello, {}!\n", name);
+    case UserType::kKnown:
+      return fmt::format("Hi again, {}!\n", name);
+  }
+
+  UASSERT(false);
 }
 
-void AppendHello(userver::components::ComponentList &component_list) {
+void AppendHello(userver::components::ComponentList& component_list) {
   component_list.Append<Hello>();
 }
 

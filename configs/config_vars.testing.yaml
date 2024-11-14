@@ -5,5 +5,8 @@ logger-level: debug
 is_testing: true
 
 server-port: 8080
+server-grpc-port: 8081
+
+hello-endpoint: '[::1]:8081'
 
 dbconnection: 'mongodb://localhost:27017/admin'
