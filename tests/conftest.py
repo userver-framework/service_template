@@ -6,6 +6,7 @@ import grpc
 
 import handlers.hello_pb2_grpc as hello_services  # noqa: E402, E501
 
+USERVER_CONFIG_HOOKS = ['prepare_service_config']
 pytest_plugins = [
     'pytest_userver.plugins.mongo',
     'pytest_userver.plugins.grpc',
@@ -30,3 +31,12 @@ def mock_grpc_hello_session(grpc_mockserver, create_grpc_mock):
 def mock_grpc_server(mock_grpc_hello_session):
     with mock_grpc_hello_session.mock() as mock:
         yield mock
+
+
+@pytest.fixture(scope='session')
+def prepare_service_config(grpc_mockserver_endpoint):
+    def patch_config(config, config_vars):
+        components = config['components_manager']['components']
+        components['hello-client']['endpoint'] = grpc_mockserver_endpoint
+
+    return patch_config
