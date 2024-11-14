@@ -93,3 +93,5 @@ components_manager:
         mongo-db-1:
             dbconnection: $dbconnection
 
+        dns-client:
+            fs-task-processor: fs-task-processor
