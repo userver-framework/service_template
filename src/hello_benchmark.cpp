@@ -14,7 +14,7 @@ void HelloBenchmark(benchmark::State& state) {
 
     for (auto _ : state) {
       const auto name = kNames[i++ % std::size(kNames)];
-      auto result = service_template::SayHelloTo(name);
+      auto result = mongo_grpc_service_template::SayHelloTo(name);
       benchmark::DoNotOptimize(result);
     }
   });

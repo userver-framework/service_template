@@ -4,10 +4,6 @@ services:
     mongo:
         container_name: service-mongo
         image: mongo
-        environment: &db_env
-          POSTGRES_DB: pg_grpc_service_template_db_1
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: password
         ports:
           - 27017
         networks:
