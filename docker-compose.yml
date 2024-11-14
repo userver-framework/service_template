@@ -1,18 +1,18 @@
 version: "2.3"
 
 services:
-    service_template-container:
+    mongo_grpc_service_template-container:
         image: ghcr.io/userver-framework/ubuntu-22.04-userver-pg:latest
         privileged: true
         network_mode: bridge
         environment:
           - PREFIX=${PREFIX:-~/.local}
-          - CCACHE_DIR=/service_template/.ccache
+          - CCACHE_DIR=/mongo_grpc_service_template/.ccache
           - CORES_DIR=/cores
         volumes:
-          - .:/service_template:rw
+          - .:/mongo_grpc_service_template:rw
         ports:
           - 8080:8080
-        working_dir: /service_template
+        working_dir: /mongo_grpc_service_template
         entrypoint:
           - ./tests/run_as_user.sh

@@ -6,6 +6,6 @@ userver framework. For example:
 ```
 cd /data/code
 git clone --depth 1 https://github.com/userver-framework/userver.git
-git clone --depth 1 https://github.com/userver-framework/service_template.git
-ln -s /data/code/userver /data/code/service_template/third_party/userver
+git clone --depth 1 https://github.com/userver-framework/mongo_grpc_service_template.git
+ln -s /data/code/userver /data/code/mongo_grpc_service_template/third_party/userver
 ```

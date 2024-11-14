@@ -67,17 +67,17 @@ jobs:
           - name: Test run after install
             if: matrix.make == 'test-release'
             run: >-
-                ./local_installation/bin/service_template
-                --config=./local_installation/etc/service_template/static_config.yaml
-                --config_vars=./local_installation/etc/service_template/config_vars.yaml
+                ./local_installation/bin/mongo_grpc_service_template
+                --config=./local_installation/etc/mongo_grpc_service_template/static_config.yaml
+                --config_vars=./local_installation/etc/mongo_grpc_service_template/config_vars.yaml
                 &
 
           - name: Check work run service
             if: matrix.make == 'test-release'
             run: |
-                ps aux | grep service_template | grep config && curl http://localhost:8080/ping -v
+                ps aux | grep mongo_grpc_service_template | grep config && curl http://localhost:8080/ping -v
 
           - name: Stop all
             if: matrix.make == 'test-release'
             run: |
-                killall service_template
+                killall mongo_grpc_service_template

@@ -33,7 +33,7 @@ jobs:
                 sudo apt install --allow-downgrades -y docker-compose
 
           - name: Setup ccache
-            run: docker-compose run --rm service_template-container bash -c 'ccache -M 2.0GB && ccache -s'
+            run: docker-compose run --rm mongo_grpc_service_template-container bash -c 'ccache -M 2.0GB && ccache -s'
 
           - name: Cmake
             run: make docker-cmake-release
