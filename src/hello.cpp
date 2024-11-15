@@ -15,10 +15,10 @@ Hello::SayHelloResult Hello::SayHello(CallContext& /*context*/,
 
   auto user_type = UserType::kFirstTime;
   if (!name.empty()) {
-    auto users = mongo_pool_->GetCollection("users");
+    auto users = mongo_pool_->GetCollection("hello_users");
     auto result = users.FindAndModify(
       userver::formats::bson::MakeDoc("name", name),
-      userver::formats::bson::MakeDoc("count", "$inc:{count:1}"),
+      userver::formats::bson::MakeDoc("$inc", userver::formats::bson::MakeDoc("count", 1)),
       userver::storages::mongo::options::Upsert{}
     );
 

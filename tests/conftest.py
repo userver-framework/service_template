@@ -13,6 +13,23 @@ pytest_plugins = [
 ]
 
 
+MONGO_COLLECTIONS = {
+    'hello_users': {
+        'settings': {
+            'collection': 'hello_users',
+            'connection': 'admin',
+            'database': 'admin',
+        },
+        'indexes': [],
+    },
+}
+
+
+@pytest.fixture(scope='session')
+def mongodb_settings():
+    return MONGO_COLLECTIONS
+
+
 @pytest.fixture
 def grpc_service(grpc_channel, service_client):
     return hello_services.HelloServiceStub(grpc_channel)

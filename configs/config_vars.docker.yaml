@@ -3,11 +3,11 @@ worker-fs-threads: 2
 worker-grpc-threads: 2
 logger-level: debug
 
-is_testing: true
+is_testing: false
 
 server-port: 8080
 server-grpc-port: 8081
 
 hello-endpoint: '[::1]:8081'
 
-dbconnection: 'mongodb://localhost:27217/admin'
+dbconnection: 'mongodb://localhost:27017/admin'
