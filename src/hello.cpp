@@ -2,6 +2,8 @@
 
 #include <fmt/format.h>
 
+#include <userver/formats/bson/inline.hpp>
+#include <userver/storages/mongo/options.hpp>
 #include <userver/storages/mongo/pool.hpp>
 #include <userver/utils/assert.hpp>
 
@@ -13,7 +15,16 @@ Hello::SayHelloResult Hello::SayHello(CallContext& /*context*/,
 
   auto user_type = UserType::kFirstTime;
   if (!name.empty()) {
-    // TODO Mongo
+    auto users = mongo_pool_->GetCollection("users");
+    auto result = users.FindAndModify(
+      userver::formats::bson::MakeDoc("name", name),
+      userver::formats::bson::MakeDoc("count", "$inc:{count:1}"),
+      userver::storages::mongo::options::Upsert{}
+    );
+
+    if (result.ModifiedCount() > 0) {
+      user_type = UserType::kKnown;
+    }
   }
   if (name.substr(0, 5) == "mock_") {
     name = client_.SayHello(name.substr(5));
