@@ -37,4 +37,3 @@ async def test_db_updates(grpc_service):
     request = hello_protos.HelloRequest(name='World')
     response = await grpc_service.SayHello(request)
     assert response.text == 'Hi again, World!\n'
-
