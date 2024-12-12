@@ -2,7 +2,7 @@ include_guard(GLOBAL)
 
 function(download_userver)
   set(OPTIONS)
-  set(ONE_VALUE_ARGS TRY_DIR VERSION)
+  set(ONE_VALUE_ARGS TRY_DIR VERSION GIT_TAG)
   set(MULTI_VALUE_ARGS)
   cmake_parse_arguments(
       ARG "${OPTIONS}" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN}
@@ -14,8 +14,8 @@ function(download_userver)
     return()
   endif()
 
-  if(NOT DEFINED ARG_VERSION)
-    set(GIT_TAG develop)
+  if(NOT DEFINED ARG_VERSION AND NOT DEFINED ARG_GIT_TAG)
+    set(ARG_GIT_TAG develop)
   endif()
 
   include(get_cpm)
