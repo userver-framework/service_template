@@ -6,7 +6,7 @@ include(DownloadUserver)
 
 find_package(userver COMPONENTS core QUIET)
 if(NOT userver_FOUND)
-  # Tries TRY_DIR first, fallbacks to downloading userver using CPM.
+  # Tries TRY_DIR first, falls back to downloading userver using CPM.
   download_userver(
       TRY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/userver"
       GITHUB_REPOSITORY userver-framework/userver
