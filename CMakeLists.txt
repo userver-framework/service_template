@@ -4,11 +4,16 @@ project(service_template CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(DownloadUserver)
 
-find_package(userver COMPONENTS core postgresql QUIET)
+find_package(userver COMPONENTS core QUIET)
 if(NOT userver_FOUND)
-  # download_userver() tries TRY_DIR first, fallbacks to downloading userver from github
-  download_userver(TRY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/userver")
+  # Tries TRY_DIR first, fallbacks to downloading userver using CPM.
+  download_userver(
+      TRY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/userver"
+      GITHUB_REPOSITORY userver-framework/userver
+      GIT_TAG develop
+  )
 endif()
+
 userver_setup_environment()
 
 
