@@ -10,6 +10,7 @@ if(NOT userver_FOUND)
   download_userver(
       TRY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/userver"
       GITHUB_REPOSITORY userver-framework/userver
+      # Optionally: pin userver version for reproducible builds.
       GIT_TAG develop
   )
 endif()
