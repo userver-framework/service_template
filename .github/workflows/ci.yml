@@ -41,10 +41,9 @@ jobs:
                 restore-keys: |
                     ${{matrix.os}} ${{matrix.info}} ccache-dir ${{github.ref}} run-'
                     ${{matrix.os}} ${{matrix.info}} ccache-
-
           - name: Install packages
             run: |
-                DEPS_FILE="https://github.com/userver-framework/userver/scripts/docs/en/deps/${{matrix.os}}.md"
+                DEPS_FILE="https://raw.githubusercontent.com/userver-framework/userver/refs/heads/develop/scripts/docs/en/deps/${{matrix.os}}.md"
                 sudo apt update
                 sudo apt install --allow-downgrades -y $(wget -q -O - ${DEPS_FILE} | tr '\n' ' ')
                 python3 -m pip install -r requirements.txt
