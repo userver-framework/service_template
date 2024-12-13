@@ -8,17 +8,25 @@ function(download_userver)
       ARG "${OPTIONS}" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN}
   )
 
-  if(ARG_TRY_DIR AND EXISTS "${ARG_TRY_DIR}")
-    message(STATUS "Using userver from ${ARG_TRY_DIR}")
-    add_subdirectory("${ARG_TRY_DIR}")
-    return()
+  if(ARG_TRY_DIR)
+    get_filename_component(ARG_TRY_DIR "${ARG_TRY_DIR}" REALPATH)
+    if(EXISTS "${ARG_TRY_DIR}")
+      message(STATUS "Using userver from ${ARG_TRY_DIR}")
+      add_subdirectory("${ARG_TRY_DIR}" third_party/userver)
+      return()
+    endif()
   endif()
+
+  include(get_cpm)
 
   if(NOT DEFINED ARG_VERSION AND NOT DEFINED ARG_GIT_TAG)
     set(ARG_GIT_TAG develop)
   endif()
 
-  include(get_cpm)
+  if(NOT DEFINED CPM_USE_NAMED_CACHE_DIRECTORIES)
+    set(CPM_USE_NAMED_CACHE_DIRECTORIES ON)
+  endif()
+
   CPMAddPackage(
       NAME userver
       GITHUB_REPOSITORY userver-framework/userver

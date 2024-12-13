@@ -1,6 +1,6 @@
 CMAKE_COMMON_FLAGS ?= -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-CMAKE_DEBUG_FLAGS ?= -DUSERVER_SANITIZE='addr ub'
-CMAKE_RELEASE_FLAGS ?=
+CMAKE_DEBUG_FLAGS ?= --preset debug
+CMAKE_RELEASE_FLAGS ?= --preset release
 NPROCS ?= $(shell nproc)
 CLANG_FORMAT ?= clang-format
 DOCKER_COMPOSE ?= docker-compose
@@ -42,7 +42,7 @@ test-debug test-release: test-%: build-%
 # Start the service (via testsuite service runner)
 .PHONY: start-debug start-release
 start-debug start-release: start-%:
-	cmake --build build_$* -v --target=start-service_template
+	cmake --build build_$* -v --target start-service_template
 
 .PHONY: service-start-debug service-start-release
 service-start-debug service-start-release: service-start-%: start-%
