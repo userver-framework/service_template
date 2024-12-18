@@ -46,7 +46,7 @@ jobs:
             run: |
                 DEPS_FILE="https://raw.githubusercontent.com/userver-framework/userver/refs/heads/develop/scripts/docs/en/deps/${{matrix.os}}.md"
                 sudo apt update
-                sudo apt install --allow-downgrades -y $(wget -q -O - ${DEPS_FILE} | tr '\n' ' ')
+                sudo apt install --allow-downgrades -y $(wget -q -O - ${DEPS_FILE})
                 python3 -m pip install -r requirements.txt
 
           - name: Setup ccache
