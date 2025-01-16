@@ -13,4 +13,4 @@ cmake-build-*
 Testing/
 .DS_Store
 Makefile.local
-CmakeUserPresets.json
+CMakeUserPresets.json
