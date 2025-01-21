@@ -1,67 +1,54 @@
-CMAKE_COMMON_FLAGS ?= -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-CMAKE_DEBUG_FLAGS ?= --preset debug
-CMAKE_RELEASE_FLAGS ?= --preset release
 NPROCS ?= $(shell nproc)
 CLANG_FORMAT ?= clang-format
 DOCKER_COMPOSE ?= docker-compose
+PRESETS ?= debug release debug-custom release-custom
 
 # NOTE: use Makefile.local to override the options defined above.
 -include Makefile.local
-
-CMAKE_DEBUG_FLAGS += -DCMAKE_BUILD_TYPE=Debug $(CMAKE_COMMON_FLAGS)
-CMAKE_RELEASE_FLAGS += -DCMAKE_BUILD_TYPE=Release $(CMAKE_COMMON_FLAGS)
 
 .PHONY: all
 all: test-debug test-release
 
 # Run cmake
-.PHONY: cmake-debug
-cmake-debug:
-	cmake -B build_debug $(CMAKE_DEBUG_FLAGS)
+.PHONY: $(addprefix cmake-, $(PRESETS))
+$(addprefix cmake-, $(PRESETS)): cmake-%:
+	cmake -B build-$* --preset $*
 
-.PHONY: cmake-release
-cmake-release:
-	cmake -B build_release $(CMAKE_RELEASE_FLAGS)
-
-build_debug/CMakeCache.txt: cmake-debug
-build_release/CMakeCache.txt: cmake-release
+$(addsuffix /CMakeCache.txt, $(addprefix build-, $(PRESETS))): build-%/CMakeCache.txt: cmake-%
 
 # Build using cmake
-.PHONY: build-debug build-release
-build-debug build-release: build-%: build_%/CMakeCache.txt
-	cmake --build build_$* -j $(NPROCS) --target service_template
+.PHONY: $(addprefix build-, $(PRESETS))
+$(addprefix build-, $(PRESETS)): build-%: build-%/CMakeCache.txt
+	cmake --build build-$* -j $(NPROCS) --target service_template
 
 # Test
-.PHONY: test-debug test-release
-test-debug test-release: test-%: build-%
-	cmake --build build_$* -j $(NPROCS) --target service_template_unittest
-	cmake --build build_$* -j $(NPROCS) --target service_template_benchmark
-	cd build_$* && ((test -t 1 && GTEST_COLOR=1 PYTEST_ADDOPTS="--color=yes" ctest -V) || ctest -V)
+.PHONY: $(addprefix test-, $(PRESETS))
+$(addprefix test-, $(PRESETS)): test-%: build-%
+	cmake --build build-$* -j $(NPROCS) --target service_template_unittest
+	cmake --build build-$* -j $(NPROCS) --target service_template_benchmark
+	cd build-$* && ((test -t 1 && GTEST_COLOR=1 PYTEST_ADDOPTS="--color=yes" ctest -V) || ctest -V)
 	pycodestyle tests
 
 # Start the service (via testsuite service runner)
-.PHONY: start-debug start-release
-start-debug start-release: start-%:
-	cmake --build build_$* -v --target start-service_template
-
-.PHONY: service-start-debug service-start-release
-service-start-debug service-start-release: service-start-%: start-%
+.PHONY: $(addprefix start-, $(PRESETS))
+$(addprefix start-, $(PRESETS)): start-%:
+	cmake --build build-$* -v --target start-service_template
 
 # Cleanup data
-.PHONY: clean-debug clean-release
-clean-debug clean-release: clean-%:
-	cmake --build build_$* --target clean
+.PHONY: $(addprefix clean-, $(PRESETS))
+$(addprefix clean-, $(PRESETS)): clean-%:
+	cmake --build build-$* --target clean
 
 .PHONY: dist-clean
 dist-clean:
-	rm -rf build_*
+	rm -rf build-*
 	rm -rf tests/__pycache__/
 	rm -rf tests/.pytest_cache/
 
 # Install
-.PHONY: install-debug install-release
-install-debug install-release: install-%: build-%
-	cmake --install build_$* -v --component service_template
+.PHONY: $(addprefix install-, $(PRESETS))
+$(addprefix install-, $(PRESETS)): install-%: build-%
+	cmake --install build-$* -v --component service_template
 
 .PHONY: install
 install: install-release
@@ -73,23 +60,20 @@ format:
 	find tests -name '*.py' -type f | xargs autopep8 -i
 
 # Internal hidden targets that are used only in docker environment
-.PHONY: --in-docker-start-debug --in-docker-start-release
---in-docker-start-debug --in-docker-start-release: --in-docker-start-%: install-%
+.PHONY: $(addprefix --in-docker-start-, $(PRESETS))
+$(addprefix --in-docker-start-, $(PRESETS)): --in-docker-start-%: install-%
 	/home/user/.local/bin/service_template \
 		--config /home/user/.local/etc/service_template/static_config.yaml \
 		--config_vars /home/user/.local/etc/service_template/config_vars.yaml
 
 # Build and run service in docker environment
-.PHONY: docker-start-debug docker-start-release
+.PHONY: $(addprefix docker-start-, $(PRESETS))
 docker-start-debug docker-start-release: docker-start-%:
 	$(DOCKER_COMPOSE) run -p 8080:8080 --rm service_template-container make -- --in-docker-start-$*
 
-.PHONY: docker-start-service-debug docker-start-service-release
-docker-start-service-debug docker-start-service-release: docker-start-service-%: docker-start-%
-
 # Start specific target in docker environment
-.PHONY: docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release
-docker-cmake-debug docker-build-debug docker-test-debug docker-clean-debug docker-install-debug docker-cmake-release docker-build-release docker-test-release docker-clean-release docker-install-release: docker-%:
+.PHONY: $(addprefix docker-cmake-, $(PRESETS)) $(addprefix docker-build-, $(PRESETS)) $(addprefix docker-test-, $(PRESETS)) $(addprefix docker-clean-, $(PRESETS)) $(addprefix docker-install-, $(PRESETS))
+$(addprefix docker-cmake-, $(PRESETS)) $(addprefix docker-build-, $(PRESETS)) $(addprefix docker-test-, $(PRESETS)) $(addprefix docker-clean-, $(PRESETS)) $(addprefix docker-install-, $(PRESETS)): docker-%:
 	$(DOCKER_COMPOSE) run --rm service_template-container make $*
 
 # Stop docker container and cleanup data
