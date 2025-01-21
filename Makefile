@@ -3,16 +3,13 @@ CLANG_FORMAT ?= clang-format
 DOCKER_COMPOSE ?= docker-compose
 PRESETS ?= debug release debug-custom release-custom
 
-# NOTE: use Makefile.local to override the options defined above.
--include Makefile.local
-
 .PHONY: all
 all: test-debug test-release
 
 # Run cmake
 .PHONY: $(addprefix cmake-, $(PRESETS))
 $(addprefix cmake-, $(PRESETS)): cmake-%:
-	cmake -B build-$* --preset $*
+	cmake --preset $*
 
 $(addsuffix /CMakeCache.txt, $(addprefix build-, $(PRESETS))): build-%/CMakeCache.txt: cmake-%
 
