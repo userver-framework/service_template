@@ -38,7 +38,7 @@ $(addprefix clean-, $(PRESETS)): clean-%:
 
 .PHONY: dist-clean
 dist-clean:
-	rm -rf build-*
+	rm -rf build*
 	rm -rf tests/__pycache__/
 	rm -rf tests/.pytest_cache/
 
