@@ -13,7 +13,7 @@
       "inherits": [
         "common-flags"
       ],
-      "binaryDir": "${sourceDir}/build_debug",
+      "binaryDir": "${sourceDir}/build-debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "USERVER_SANITIZE": "addr;ub"
@@ -26,7 +26,7 @@
       "inherits": [
         "common-flags"
       ],
-      "binaryDir": "${sourceDir}/build_release",
+      "binaryDir": "${sourceDir}/build-release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
