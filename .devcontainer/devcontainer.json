@@ -31,7 +31,10 @@
                 "clangd.path": "/usr/bin/clangd",
                 "clangd.arguments": [
                     "--background-index",
-                    "--compile-commands-dir=.vscode"
+                    "--compile-commands-dir=.vscode",
+                    "--clang-tidy",
+                    "--completion-style=detailed",
+                    "--header-insertion=never"
                 ]
             }
         }
