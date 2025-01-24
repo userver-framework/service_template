@@ -27,6 +27,9 @@
                 "ms-azuretools.vscode-docker"
             ],
             "settings": {
+                "cmake.automaticReconfigure": false,
+                "cmake.configureOnEdit":  false,
+                "cmake.configureOnOpen": false,
                 "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
                 "clangd.path": "/usr/bin/clangd",
                 "clangd.arguments": [
