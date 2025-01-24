@@ -41,6 +41,9 @@ dist-clean:
 	rm -rf build*
 	rm -rf tests/__pycache__/
 	rm -rf tests/.pytest_cache/
+	rm -rf .ccache
+	rm -rf .vscode/.cache
+	rm -rf .vscode/compile_commands.json
 
 # Install
 .PHONY: $(addprefix install-, $(PRESETS))
