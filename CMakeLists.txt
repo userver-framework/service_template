@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(service_template CXX)
+project(service-template CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(DownloadUserver)
@@ -14,32 +14,32 @@ userver_setup_environment()
 
 
 # Common sources
-add_library(${PROJECT_NAME}_objs OBJECT
+add_library(${PROJECT_NAME}-objs OBJECT
     src/hello.hpp
     src/hello.cpp
 )
-target_link_libraries(${PROJECT_NAME}_objs PUBLIC userver::core)
+target_link_libraries(${PROJECT_NAME}-objs PUBLIC userver::core)
 
 
 # The Service
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_objs)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}-objs)
 
 
 # Unit Tests
-add_executable(${PROJECT_NAME}_unittest
+add_executable(${PROJECT_NAME}-unittest
     src/hello_test.cpp
 )
-target_link_libraries(${PROJECT_NAME}_unittest PRIVATE ${PROJECT_NAME}_objs userver::utest)
-add_google_tests(${PROJECT_NAME}_unittest)
+target_link_libraries(${PROJECT_NAME}-unittest PRIVATE ${PROJECT_NAME}-objs userver::utest)
+add_google_tests(${PROJECT_NAME}-unittest)
 
 
 # Benchmarks
-add_executable(${PROJECT_NAME}_benchmark
+add_executable(${PROJECT_NAME}-benchmark
     src/hello_benchmark.cpp
 )
-target_link_libraries(${PROJECT_NAME}_benchmark PRIVATE ${PROJECT_NAME}_objs userver::ubench)
-add_google_benchmark_tests(${PROJECT_NAME}_benchmark)
+target_link_libraries(${PROJECT_NAME}-benchmark PRIVATE ${PROJECT_NAME}-objs userver::ubench)
+add_google_benchmark_tests(${PROJECT_NAME}-benchmark)
 
 # Functional testing
 userver_testsuite_add_simple()
