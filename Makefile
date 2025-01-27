@@ -1,3 +1,4 @@
+PROJECT_NAME = service_template
 NPROCS ?= $(shell nproc)
 CLANG_FORMAT ?= clang-format
 DOCKER_COMPOSE ?= docker-compose
@@ -16,20 +17,19 @@ $(addsuffix /CMakeCache.txt, $(addprefix build-, $(PRESETS))): build-%/CMakeCach
 # Build using cmake
 .PHONY: $(addprefix build-, $(PRESETS))
 $(addprefix build-, $(PRESETS)): build-%: build-%/CMakeCache.txt
-	cmake --build build-$* -j $(NPROCS) --target service_template
+	cmake --build build-$* -j $(NPROCS) --target $(PROJECT_NAME)
 
 # Test
 .PHONY: $(addprefix test-, $(PRESETS))
-$(addprefix test-, $(PRESETS)): test-%: build-%
-	cmake --build build-$* -j $(NPROCS) --target service_template_unittest
-	cmake --build build-$* -j $(NPROCS) --target service_template_benchmark
+$(addprefix test-, $(PRESETS)): test-%: build-%/CMakeCache.txt
+	cmake --build build-$* -j $(NPROCS)
 	cd build-$* && ((test -t 1 && GTEST_COLOR=1 PYTEST_ADDOPTS="--color=yes" ctest -V) || ctest -V)
 	pycodestyle tests
 
 # Start the service (via testsuite service runner)
 .PHONY: $(addprefix start-, $(PRESETS))
 $(addprefix start-, $(PRESETS)): start-%:
-	cmake --build build-$* -v --target start-service_template
+	cmake --build build-$* -v --target start-$(PROJECT_NAME)
 
 # Cleanup data
 .PHONY: $(addprefix clean-, $(PRESETS))
@@ -48,7 +48,7 @@ dist-clean:
 # Install
 .PHONY: $(addprefix install-, $(PRESETS))
 $(addprefix install-, $(PRESETS)): install-%: build-%
-	cmake --install build-$* -v --component service_template
+	cmake --install build-$* -v --component $(PROJECT_NAME)
 
 .PHONY: install
 install: install-release
@@ -62,19 +62,19 @@ format:
 # Internal hidden targets that are used only in docker environment
 .PHONY: $(addprefix --in-docker-start-, $(PRESETS))
 $(addprefix --in-docker-start-, $(PRESETS)): --in-docker-start-%: install-%
-	/home/user/.local/bin/service_template \
-		--config /home/user/.local/etc/service_template/static_config.yaml \
-		--config_vars /home/user/.local/etc/service_template/config_vars.yaml
+	/home/user/.local/bin/$(PROJECT_NAME) \
+		--config /home/user/.local/etc/$(PROJECT_NAME)/static_config.yaml \
+		--config_vars /home/user/.local/etc/$(PROJECT_NAME)/config_vars.yaml
 
 # Build and run service in docker environment
 .PHONY: $(addprefix docker-start-, $(PRESETS))
 docker-start-debug docker-start-release: docker-start-%:
-	$(DOCKER_COMPOSE) run -p 8080:8080 --rm service_template-container make -- --in-docker-start-$*
+	$(DOCKER_COMPOSE) run -p 8080:8080 --rm $(PROJECT_NAME)-container make -- --in-docker-start-$*
 
 # Start specific target in docker environment
 .PHONY: $(addprefix docker-cmake-, $(PRESETS)) $(addprefix docker-build-, $(PRESETS)) $(addprefix docker-test-, $(PRESETS)) $(addprefix docker-clean-, $(PRESETS)) $(addprefix docker-install-, $(PRESETS))
 $(addprefix docker-cmake-, $(PRESETS)) $(addprefix docker-build-, $(PRESETS)) $(addprefix docker-test-, $(PRESETS)) $(addprefix docker-clean-, $(PRESETS)) $(addprefix docker-install-, $(PRESETS)): docker-%:
-	$(DOCKER_COMPOSE) run --rm service_template-container make $*
+	$(DOCKER_COMPOSE) run --rm $(PROJECT_NAME)-container make $*
 
 # Stop docker container and cleanup data
 .PHONY: docker-clean-data
