@@ -22,8 +22,7 @@ $(addprefix build-, $(PRESETS)): build-%: build-%/CMakeCache.txt
 # Test
 .PHONY: $(addprefix test-, $(PRESETS))
 $(addprefix test-, $(PRESETS)): test-%: build-%
-	cmake --build build-$* -j $(NPROCS) --target $(PROJECT_NAME)-unittest
-	cmake --build build-$* -j $(NPROCS) --target $(PROJECT_NAME)-benchmark
+	cmake --build build-$* -j $(NPROCS)
 	cd build-$* && ((test -t 1 && GTEST_COLOR=1 PYTEST_ADDOPTS="--color=yes" ctest -V) || ctest -V)
 	pycodestyle tests
 
