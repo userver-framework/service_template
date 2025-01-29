@@ -17,6 +17,8 @@ function(download_userver)
     endif()
   endif()
 
+  # CMP0077 and CMP0126 are required for correct option forwarding.
+  cmake_minimum_required(VERSION 3.21)
   include(get_cpm)
 
   if(NOT DEFINED ARG_VERSION AND NOT DEFINED ARG_GIT_TAG)
