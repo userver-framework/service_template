@@ -12,7 +12,8 @@ all: test-debug test-release
 $(addprefix cmake-, $(PRESETS)): cmake-%:
 	cmake --preset $*
 
-$(addsuffix /CMakeCache.txt, $(addprefix build-, $(PRESETS))): build-%/CMakeCache.txt: cmake-%
+$(addsuffix /CMakeCache.txt, $(addprefix build-, $(PRESETS))): build-%/CMakeCache.txt:
+	$(MAKE) cmake-$*
 
 # Build using cmake
 .PHONY: $(addprefix build-, $(PRESETS))
