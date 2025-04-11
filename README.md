@@ -1,4 +1,5 @@
-**This repository is for userver v2.8 or older versions. For newer versions of userver please use userver-create-service script.**
+**This repository is for userver v2.8 or older versions. For newer versions of userver please use 
+[userver-create-service](https://userver.tech/de/dab/md_en_2userver_2build_2build.html#autotoc_md177) script.**
 
 # service_template
 
