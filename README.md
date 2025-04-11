@@ -1,4 +1,4 @@
-**This repository is for userver v2.8. For newer versions of userver please use userver-create-service script.**
+**This repository is for userver v2.8 or older versions. For newer versions of userver please use userver-create-service script.**
 
 # service_template
 
