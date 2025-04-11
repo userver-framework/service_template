@@ -1,3 +1,5 @@
+**This repository is for userver v2.8. For newer versions of userver please use userver-create-service script.**
+
 # service_template
 
 Template of a C++ service that uses [userver framework](https://github.com/userver-framework/userver).
