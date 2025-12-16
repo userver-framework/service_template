@@ -34,7 +34,7 @@ jobs:
                 submodules: true
 
           - name: Reuse ccache directory
-            uses: actions/cache@v4
+            uses: actions/cache@v5
             with:
                 path: ~/.cache/ccache
                 key: '${{matrix.os}} ${{matrix.info}} ccache-dir ${{github.ref}} run-${{github.run_number}}'
